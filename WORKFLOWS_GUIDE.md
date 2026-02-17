@@ -68,66 +68,29 @@ Tienes una **captura de pantalla de una web real** (o un diseno high-fidelity en
 
 - Ninguno. El repo puede estar en estado por defecto.
 
-### Paso a Paso
+### Paso a Paso (2 steps)
 
-#### Paso 1: Generar el JSON Brief
+Todos los workflows siguen un flujo de 2 pasos. Los prompts exactos estan en **[PROMPTS.md](PROMPTS.md)**.
 
-Toma la imagen/screenshot y pasala a un LLM (Claude, GPT, etc.) con un prompt como:
+#### Step 1: Generar el Brief (en cualquier LLM)
 
-```
-Analiza esta imagen de una pagina web y genera un JSON brief detallado
-con las siguientes secciones:
-- meta (scope, layout notes)
-- design_tokens (color palettes, typography, radii, spacing, shadows)
-- layout_system (container, responsive rules)
-- components (cada seccion con structure, interactions, light/dark mode, responsive)
-- interaction_states
-- accessibility_and_content_rules
-```
+Adjunta la imagen/screenshot al LLM y usa el **prompt de Step 1 de Path 1** de [PROMPTS.md](PROMPTS.md#path-1-screenshot-of-real-website--faithful-clone).
 
-#### Paso 2: Enviar al agente con el prompt de Clone Mode
+El LLM genera:
+- Un **JSONC design specification** (tokens, layout, componentes)
+- Un **markdown implementation prompt** (brief para el desarrollador)
 
-```
-Your task is to implement a new route on /[RUTA], following the
-design + development brief below. Implement thoroughly, in a
-step-by-step manner, and use built-in, standard Tailwind CSS design
-tokens instead of hardcoding values.
+Guarda ambos outputs.
 
-For colors and font families, use the defined values present in
-@tailwind.config.js, e.g. 'bg-primary-500' etc. instead of the
-hardcoded primary/secondary values in the JSON brief. For one-off
-colors/grays etc. the JSON values are acceptable.
+#### Step 2: Implementar (en el coding agent con el repo abierto)
 
-**Requirements**
+Usa el **prompt de Step 2 de Path 1** de [PROMPTS.md](PROMPTS.md#path-1-screenshot-of-real-website--faithful-clone), pegando los dos outputs de Step 1 en los placeholders indicados.
 
-- responsive (full width bg with centered content on larger screens)
-- theme aware components with light and dark mode support (you can
-  toggle with @ThemeSwitch.tsx; make sure to include that in the
-  menu bar)
-  - update @data/config/colors.js to match the colors in the
-    design brief
-  - *important* make sure to include light and dark mode colors by
-    using Tailwind's dark mode classes (dark:)
-  - all components must adapt to theme changes
-- *do not use* magic strings, hex values, or px values. Replace all
-  with Tailwind classes if possible.
-- split reusable or complex parts of the UI into components so the
-  code is maintainable and easy to understand.
-- if any sample data is generated, place it in a separate file to
-  keep the code clean.
-
-**Note**
-
-- the app is already running a dev server at port 6006
-
-**Assignment brief**
-
-<PEGAR JSON BRIEF AQUI>
-
-**Design specification**
-
-<PEGAR JSONC DESIGN SPECIFICATION AQUI>
-```
+El prompt le dice al agente que:
+- Actualice `colors.js` para coincidir con la paleta del brief
+- Use tokens de Tailwind (`bg-primary-500`) en vez de valores hardcodeados
+- Soporte light/dark mode y responsive
+- Divida en componentes reutilizables
 
 #### Paso 3: Verificar
 
@@ -163,47 +126,22 @@ Tienes **codigo exportado de Figma** (via un plugin como Figma-to-Tailwind o Fig
 - Plugin de Figma instalado (Figma to Code, Anima, Locofy, etc.)
 - Ninguno en el repo.
 
-### Paso a Paso
+### Paso a Paso (2 steps)
 
-#### Paso 1: Exportar desde Figma
+Los prompts exactos estan en **[PROMPTS.md](PROMPTS.md#path-2-exported-figma-code--faithful-clone)**.
 
-Usa el plugin de Figma para exportar el diseno como codigo React/Tailwind.
+#### Step 1: Analizar el codigo exportado (en cualquier LLM)
 
-#### Paso 2: Generar el JSON Brief
+1. Exporta desde Figma usando un plugin (Figma to Code, Anima, Locofy, etc.)
+2. Pega el codigo exportado en un LLM con el **prompt de Step 1 de Path 2**
 
-Pasa el codigo exportado a un LLM para generar el JSON brief:
+El LLM genera los mismos 2 outputs que Path 1 (JSONC spec + markdown brief).
 
-```
-Analiza este codigo exportado de Figma y genera un JSON brief detallado
-con design_tokens, layout_system, components, etc.
+#### Step 2: Implementar (en el coding agent)
 
-<PEGAR CODIGO EXPORTADO>
-```
+Usa el **prompt de Step 2 de Path 2**, que incluye un placeholder adicional para pegar el codigo exportado de Figma como referencia estructural.
 
-#### Paso 3: Enviar al agente
-
-Usa exactamente el **mismo prompt que Path 1**, pero incluye el codigo exportado como contexto adicional:
-
-```
-Your task is to implement a new route on /[RUTA], following the
-design + development brief below.
-
-[... mismo prompt que Path 1 ...]
-
-**Assignment brief**
-
-<PEGAR JSON BRIEF>
-
-**Design specification**
-
-<PEGAR JSONC DESIGN SPECIFICATION>
-
-**Exported Figma code (reference)**
-
-<PEGAR CODIGO EXPORTADO DE FIGMA>
-```
-
-#### Paso 4: Verificar
+#### Paso 3: Verificar
 
 Mismo proceso que Path 1.
 
@@ -239,56 +177,27 @@ Tienes un **wireframe** (boceto, baja fidelidad) y quieres convertirlo en una UI
    - `tailwind.config.js` — tiene borderRadius/shadows del DS
    - `app/layout.tsx` — tiene la fuente del DS
 
-### Paso a Paso
+### Paso a Paso (2 steps)
 
-#### Paso 1: Crear el wireframe en Figma
+Los prompts exactos estan en **[PROMPTS.md](PROMPTS.md#path-3-low-fi-wireframe--design-system--high-fidelity)**.
 
-Crea un wireframe low-fidelity en Figma (cajas grises, texto placeholder, estructura basica).
+#### Step 1: Analizar el wireframe (en cualquier LLM)
 
-#### Paso 2: Exportar como imagen o codigo
+1. Crea un wireframe low-fidelity (Figma, papel, Excalidraw, lo que sea)
+2. Captura de pantalla del wireframe (PNG)
+3. Adjuntala a un LLM con el **prompt de Step 1 de Path 3**
 
-- **Opcion A**: Captura de pantalla del wireframe (PNG)
-- **Opcion B**: Exportar codigo via plugin de Figma
+La diferencia clave con Path 1/2: el prompt indica al LLM que este es un wireframe low-fi, asi que debe enfocarse en **estructura, jerarquia y comportamiento** en lugar de tokens visuales exactos.
 
-#### Paso 3: Generar el JSON Brief
+#### Step 2: Implementar con preservacion del DS (en el coding agent)
 
-Pasa la imagen/codigo a un LLM para generar el JSON brief. El brief tendra tokens genericos (negros, grises, tipografia basica) porque es un wireframe.
+Usa el **prompt de Step 2 de Path 3**, que incluye la seccion critica **"Design System Preservation"**:
 
-#### Paso 4: Enviar al agente con el prompt de Wireframe Mode
+- Le dice al agente que NO modifique los 4 config files
+- Le dice que lea los tokens existentes del DS PRIMERO
+- Le dice que traduzca los tokens del wireframe a tokens del DS
 
-```
-Your task is to implement a new route on /[RUTA], following the
-wireframe brief below.
-
-**CRITICAL: Design System Preservation**
-
-This repo has [NOMBRE DS] Design System configured. DO NOT modify:
-- `data/config/colors.js`
-- `css/globals.css`
-- `tailwind.config.js`
-- `app/layout.tsx` font imports
-
-Read the current DS tokens from these files FIRST. Then implement the
-wireframe using ONLY those existing tokens.
-
-When the brief specifies visual tokens (colors like "#3F3F3F", radius
-like "80px pill", fonts like "Helvetica Neue"), translate them to the
-nearest EXISTING DS token (e.g., bg-neutral-700, rounded-none,
-font-sans).
-
-**Requirements**
-- Responsive with light/dark mode (Tailwind `dark:` classes)
-- Include ThemeSwitch in header
-- No hardcoded hex values, px values, or magic strings
-- Components split logically into separate files
-- Sample data in separate files under `data/`
-
-**Wireframe Brief**
-
-<PEGAR JSON BRIEF DEL WIREFRAME>
-```
-
-#### Paso 5: Verificar
+#### Paso 3: Verificar
 
 - Abrir `http://localhost:6006/[RUTA]`
 - Verificar que la **estructura** es fiel al wireframe
@@ -367,14 +276,23 @@ Use the config at ./design-systems/[nombre]/design-system.config.json
 
 ### Como crear un nuevo DS
 
-1. Copiar el template: `cp design-systems/TEMPLATE.config.json design-systems/[nombre]/design-system.config.json`
-2. Rellenar TODAS las secciones del JSON:
-   - **Obligatorias**: `name`, `colors`, `cssVariables` (light + dark), `typography`, `borderRadius`, `shadows`
-   - **Recomendadas**: `neutrals`, `semanticColors`, `semanticColorsDark`, `spacing`, `focus`, `transitions`, `componentOverrides`
-3. Para `componentOverrides`, hay dos formatos:
-   - **CVA components** (Button, Badge): definir `base`, `variants`, `sizes` con strings de clases Tailwind completos
-   - **Non-CVA components** (Switch, Checkbox, Toast): definir `classReplacements` con pares find/replace de fragmentos de clases
-4. Ver `design-systems/ibm-carbon/design-system.config.json` como ejemplo completo
+Tienes 3 opciones. Los prompts y el schema JSON completo estan en **[PROMPTS.md](PROMPTS.md#creating-a-design-system-config)**.
+
+| Opcion | Cuando usarla |
+|--------|--------------|
+| **A: Extraccion con LLM** | Tienes un brand guide (PDF, Figma, URL) — pegalo al LLM con el prompt de extraccion y genera el JSON automaticamente |
+| **B: Template manual** | Conoces tus tokens y quieres llenarlos directamente en el template |
+| **C: Extraer de web existente** | El DS ya esta implementado en un sitio web — captura screenshots y extrae tokens |
+
+#### Secciones del config JSON
+
+- **Obligatorias**: `name`, `colors` (primary + secondary, 5 shades), `cssVariables` (light + dark en HSL), `typography` (fontFamily minimo), `borderRadius`, `shadows`
+- **Recomendadas para alta fidelidad**: `neutrals`, `semanticColors` + `semanticColorsDark`, `focus`, `transitions`
+- **Avanzadas**: `componentOverrides` — dos formatos:
+  - **CVA components** (Button, Badge): definir `base`, `variants`, `sizes` con strings de clases Tailwind completos
+  - **Non-CVA components** (Switch, Checkbox, Toast): definir `classReplacements` con pares find/replace
+
+Ver `design-systems/ibm-carbon/design-system.config.json` como ejemplo completo de todas las secciones.
 
 ### Schema del Config JSON
 
@@ -431,10 +349,7 @@ Este repo tiene DOS sistemas de color que trabajan juntos:
 
 ### 1. Inyectar el DS
 
-```
-Inject the IBM Carbon Design System.
-Use ./design-systems/ibm-carbon/design-system.config.json
-```
+Usa el prompt de [DS Injection en PROMPTS.md](PROMPTS.md#ds-injection) con IBM Carbon.
 
 La inyeccion completa:
 - Actualiza los 4 config files (colors, globals, tailwind, layout)
@@ -453,23 +368,11 @@ Disena un wireframe basico: cajas grises, texto placeholder, estructura de secci
 
 ### 3. Exportar y generar brief
 
-Captura de pantalla del wireframe → LLM → JSON brief.
+Captura de pantalla del wireframe → LLM con **Step 1 de Path 3** de [PROMPTS.md](PROMPTS.md#path-3-low-fi-wireframe--design-system--high-fidelity) → JSON brief.
 
 ### 4. Enviar prompt de Path 3
 
-```
-Your task is to implement a new route on /dashboard, following the
-wireframe brief below.
-
-**CRITICAL: Design System Preservation**
-This repo has IBM Carbon Design System configured. DO NOT modify:
-- data/config/colors.js
-- css/globals.css
-- tailwind.config.js
-- app/layout.tsx font imports
-
-[... wireframe brief ...]
-```
+Usa el **Step 2 de Path 3** de [PROMPTS.md](PROMPTS.md#path-3-low-fi-wireframe--design-system--high-fidelity), pegando el brief generado en Step 1. El prompt incluye la seccion de DS Preservation que le dice al agente que no modifique los config files y traduzca tokens del wireframe a tokens Carbon.
 
 ### 5. Resultado esperado
 

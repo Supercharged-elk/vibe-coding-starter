@@ -138,13 +138,20 @@ Follow @.cursor/rules/design-system-migration.mdc
 
 ### How to Create a New DS
 
-1. Copy the template:
-   ```bash
-   mkdir -p design-systems/my-brand
-   cp design-systems/TEMPLATE.config.json design-systems/my-brand/design-system.config.json
-   ```
-2. Fill in all sections (see `ibm-carbon` config as a complete example)
-3. Inject it with the prompt above, replacing the name
+You have 3 options (see [PROMPTS.md](PROMPTS.md) for full details):
+
+| Option | Best for |
+|--------|----------|
+| **A: LLM extraction** | You have a brand guide (PDF, Figma, or URL) — paste it into an LLM with the extraction prompt |
+| **B: Manual template** | You know your tokens and want to fill them in directly |
+| **C: Live website** | The DS is already implemented on a website — screenshot it and extract tokens |
+
+Quick start with Option B:
+```bash
+mkdir -p design-systems/my-brand
+cp design-systems/TEMPLATE.config.json design-systems/my-brand/design-system.config.json
+# Edit the file, then inject it
+```
 
 ---
 
@@ -152,14 +159,17 @@ Follow @.cursor/rules/design-system-migration.mdc
 
 All prompts are in **[PROMPTS.md](PROMPTS.md)** — ready to copy and paste.
 
-Quick reference:
+Every workflow follows a **2-step flow**:
+1. **Step 1** (any LLM): Analyze the input → generates a JSONC brief + implementation prompt
+2. **Step 2** (coding agent): Implement the brief in the repo
 
-| Prompt | Purpose |
-|--------|---------|
-| **Generate JSON Brief** | Convert a screenshot/wireframe into a structured design specification |
-| **Path 1/2: Clone Mode** | Implement a route from a design brief (modifies DS config) |
-| **Path 3: Wireframe Mode** | Implement a route from a wireframe brief (preserves DS) |
-| **DS Injection** | Inject a Design System into the repo |
+| Workflow | Step 1 input | Step 2 behavior |
+|----------|-------------|-----------------|
+| **Path 1: Image Clone** | Screenshot of real website | Overwrites DS config to match the design |
+| **Path 2: Figma Clone** | Exported Figma code | Overwrites DS config to match the design |
+| **Path 3: Wireframe + DS** | Low-fi wireframe image | Preserves injected DS, translates wireframe tokens |
+| **DS Injection** | _(no Step 1)_ | Applies DS config JSON to the repo |
+| **DS Creation** | Brand guide / website | Generates the DS config JSON |
 
 ---
 
