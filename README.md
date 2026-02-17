@@ -1,6 +1,6 @@
 # Vibe Coding Starter
 
-A Next.js starter kit with **3 AI-powered workflows** for generating production-ready UI from different inputs: screenshots, Figma exports, or wireframes. Each workflow uses a different agent strategy to produce high-fidelity, themed, responsive interfaces.
+A Next.js starter kit with **3 AI-powered workflows** for generating production-ready UI from different inputs: screenshots, UI code from any source, or wireframes. Each workflow uses a different agent strategy to produce high-fidelity, themed, responsive interfaces.
 
 ## Table of Contents
 
@@ -34,19 +34,19 @@ This repo supports 3 distinct paths for generating UI. Each has its own agent ru
 INPUT                          WORKFLOW                        OUTPUT
 -----------                    --------                        ------
 Screenshot of real website --> Path 1: Clone Mode           --> Faithful visual clone
-Exported Figma code        --> Path 2: Clone Mode           --> Faithful visual clone
+UI code (any source)       --> Path 2: Clone Mode           --> Faithful visual clone
 Low-fi wireframe           --> Path 3: Wireframe + DS       --> High-fidelity with DS styling
 ```
 
-### Path 1 & 2 — Clone Mode (Image or Figma Code)
+### Path 1 & 2 — Clone Mode (Image or UI Code)
 
-**Goal**: Replicate a real website or Figma design as faithfully as possible.
+**Goal**: Replicate a real website or UI design as faithfully as possible.
 
 **How it works**: The agent reads the design brief and **overwrites** the repo's color palette, CSS variables, fonts, and component styles to match the source design. The input defines both structure AND style.
 
 **Config files modified**: `colors.js`, `globals.css`, `tailwind.config.js`, `layout.tsx`
 
-**When to use**: You have a screenshot of a real website or exported Figma code and want to clone its look exactly.
+**When to use**: You have a screenshot of a real website, or UI code from any source (Figma export, Mobbin, Variant UI, component libraries, CodePen, etc.) and want to clone its look exactly.
 
 ### Path 3 — Wireframe to High Fidelity
 
@@ -60,9 +60,9 @@ Low-fi wireframe           --> Path 3: Wireframe + DS       --> High-fidelity wi
 
 ### Comparison
 
-| | Path 1 (Image Clone) | Path 2 (Figma Clone) | Path 3 (Wireframe + DS) |
+| | Path 1 (Image Clone) | Path 2 (Code Clone) | Path 3 (Wireframe + DS) |
 |---|:---:|:---:|:---:|
-| **Input** | Screenshot | Figma code | Low-fi wireframe |
+| **Input** | Screenshot | UI code (any source) | Low-fi wireframe |
 | **Style source** | The input | The input | The injected DS |
 | **Modifies config files** | Yes | Yes | No |
 | **Requires DS injection** | No | No | Yes |
@@ -166,7 +166,7 @@ Every workflow follows a **2-step flow**:
 | Workflow | Step 1 input | Step 2 behavior |
 |----------|-------------|-----------------|
 | **Path 1: Image Clone** | Screenshot of real website | Overwrites DS config to match the design |
-| **Path 2: Figma Clone** | Exported Figma code | Overwrites DS config to match the design |
+| **Path 2: Code Clone** | UI code (Figma, Mobbin, Variant UI, etc.) | Overwrites DS config to match the design |
 | **Path 3: Wireframe + DS** | Low-fi wireframe image | Preserves injected DS, translates wireframe tokens |
 | **DS Injection** | _(no Step 1)_ | Applies DS config JSON to the repo |
 | **DS Creation** | Brand guide / website | Generates the DS config JSON |

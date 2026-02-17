@@ -56,23 +56,25 @@ For colors and font families, use the defined values present in @tailwind.config
 
 ---
 
-## Path 2: Exported Figma Code → Faithful Clone
+## Path 2: UI Code from Any Source → Faithful Clone
 
-### Step 1 — Analyze the Figma export (run in any LLM, paste the code)
+Use this when you have **code** of a UI you want to replicate. The code can come from anywhere: Figma export plugins, Mobbin, Variant UI, Dribbble code snippets, component libraries, CodePen, or any other source that gives you React/HTML/Tailwind code.
+
+### Step 1 — Analyze the UI code (run in any LLM, paste the code)
 
 ```
-This is the exported code from a Figma design for [DESCRIBE WHAT IT IS — e.g. "an editorial news website for a European NGO"].
+This is the code for a UI design of [DESCRIBE WHAT IT IS — e.g. "an editorial news website for a European NGO"].
 
-Thoroughly analyze this exported Figma code and describe the UI in as much detail as you can to hand over from a UI designer to a developer. The brief should cover both light and dark mode and contain responsive breakpoints matching Tailwind CSS defaults.
+Thoroughly analyze this UI code and describe it in as much detail as you can to hand over from a UI designer to a developer. The brief should cover both light and dark mode and contain responsive breakpoints matching Tailwind CSS defaults.
 Output characteristics as structured JSONC.
 
 For colors, extract a rough palette and only detail accents and complex media. The goal is to use only 2 palettes: primary and secondary similar to Tailwind colors. Alongside these 2, you can define any number of grays and accent colors for more complex UI (gradients, shadows, SVGs, etc.).
 
 End with a prompt explaining how to implement the UI for a developer, but don't mention any tech specs; only a brief of the UI to be implemented and the token rules + usage. Output the prompt as a Markdown code block.
 
-**Exported Figma code**
+**UI code**
 
-<Paste the exported React/Tailwind/HTML code from your Figma plugin>
+<Paste the code from your source — Figma export, Mobbin, Variant UI, component library, etc.>
 ```
 
 **Output**: Same as Path 1 — a JSONC design specification and a markdown implementation prompt.
@@ -107,9 +109,9 @@ For colors and font families, use the defined values present in @tailwind.config
 
 <Paste the JSONC design specification from Step 1>
 
-**Exported Figma code (reference)**
+**Source UI code (reference)**
 
-<Paste the original exported Figma code — the agent uses it as structural reference alongside the brief>
+<Paste the original UI code — the agent uses it as structural reference alongside the brief>
 ```
 
 ---
@@ -401,7 +403,7 @@ Look at:
 | I have... | I want... | Steps |
 |-----------|-----------|-------|
 | Screenshot of a real website | A clone of it | Path 1: Step 1 + Step 2 |
-| Exported Figma code | A clone of it | Path 2: Step 1 + Step 2 |
+| UI code (Figma export, Mobbin, Variant UI, etc.) | A clone of it | Path 2: Step 1 + Step 2 |
 | A wireframe + a brand DS | A polished UI with the brand | DS Injection → Path 3: Step 1 + Step 2 |
 | A brand guide but no DS config | A DS config JSON | "Creating a DS Config" (Option A, B, or C) → then DS Injection |
 | Nothing yet | To try the system | Use IBM Carbon: DS Injection → draw a wireframe → Path 3 |
@@ -411,7 +413,7 @@ Look at:
 ## Tips
 
 - **Step 1 quality matters**: The more detailed the JSONC brief, the better the result. Include responsive rules, dark mode, and interaction states.
-- **Path 1/2 are identical in Step 2**: The only difference is the input to Step 1 (image vs code). The implementation prompt is the same.
+- **Path 1/2 are identical in Step 2**: The only difference is the input to Step 1 (image vs code from any source). The implementation prompt is the same.
 - **Path 3 preserves the DS**: After implementation, verify with `git diff data/config/colors.js css/globals.css tailwind.config.js app/layout.tsx` — these should show no changes.
 - **Token translation in Path 3**: The agent automatically translates wireframe tokens to DS equivalents (pill → rounded-none, black → bg-primary-500, Helvetica → font-sans). You don't need to do this manually.
 - **DS creation**: Option A (LLM extraction) works surprisingly well. Give it your brand guide PDF or Figma screenshots and it will extract a usable config in one shot. Review and adjust as needed.

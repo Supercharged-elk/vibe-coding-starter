@@ -16,9 +16,9 @@ Este repositorio soporta 3 caminos distintos para generar interfaces de usuario 
               |              |              |
               v              v              v
      +--------+----+  +-----+------+  +----+--------+
-     | IMAGEN de   |  | CODIGO     |  | WIREFRAME   |
-     | web real    |  | exportado  |  | de Figma    |
-     | (screenshot)|  | de Figma   |  | (low-fi)    |
+     | IMAGEN de   |  | CODIGO UI  |  | WIREFRAME   |
+     | web real    |  | de cualq.  |  | de Figma    |
+     | (screenshot)|  | fuente     |  | (low-fi)    |
      +--------+----+  +-----+------+  +----+--------+
               |              |              |
               v              v              |
@@ -115,31 +115,31 @@ El prompt le dice al agente que:
 
 ---
 
-## Path 2: Codigo Figma → Clone (Replicacion Fiel)
+## Path 2: Codigo UI (cualquier fuente) → Clone (Replicacion Fiel)
 
 ### Cuando usarlo
 
-Tienes **codigo exportado de Figma** (via un plugin como Figma-to-Tailwind o Figma-to-React) y quieres replicarlo fielmente.
+Tienes **codigo de una UI** que quieres replicar. El codigo puede venir de cualquier fuente: plugin de Figma (Figma to Code, Anima, Locofy), Mobbin, Variant UI, Dribbble, CodePen, bibliotecas de componentes, o cualquier otro recurso que te de codigo React/HTML/Tailwind.
 
 ### Prerequisitos
 
-- Plugin de Figma instalado (Figma to Code, Anima, Locofy, etc.)
+- Codigo de UI copiado de la fuente que prefieras.
 - Ninguno en el repo.
 
 ### Paso a Paso (2 steps)
 
-Los prompts exactos estan en **[PROMPTS.md](PROMPTS.md#path-2-exported-figma-code--faithful-clone)**.
+Los prompts exactos estan en **[PROMPTS.md](PROMPTS.md#path-2-ui-code-from-any-source--faithful-clone)**.
 
-#### Step 1: Analizar el codigo exportado (en cualquier LLM)
+#### Step 1: Analizar el codigo UI (en cualquier LLM)
 
-1. Exporta desde Figma usando un plugin (Figma to Code, Anima, Locofy, etc.)
-2. Pega el codigo exportado en un LLM con el **prompt de Step 1 de Path 2**
+1. Copia el codigo de tu fuente (Figma export, Mobbin, Variant UI, etc.)
+2. Pega el codigo en un LLM con el **prompt de Step 1 de Path 2**
 
 El LLM genera los mismos 2 outputs que Path 1 (JSONC spec + markdown brief).
 
 #### Step 2: Implementar (en el coding agent)
 
-Usa el **prompt de Step 2 de Path 2**, que incluye un placeholder adicional para pegar el codigo exportado de Figma como referencia estructural.
+Usa el **prompt de Step 2 de Path 2**, que incluye un placeholder adicional para pegar el codigo UI original como referencia estructural.
 
 #### Paso 3: Verificar
 
@@ -147,7 +147,7 @@ Mismo proceso que Path 1.
 
 ### Diferencia con Path 1
 
-La unica diferencia es que el **input** es codigo en lugar de imagen. El codigo exportado da al agente informacion estructural mas precisa (componentes, props, layout CSS) que complementa el JSON brief.
+La unica diferencia es que el **input** es codigo en lugar de imagen. El codigo da al agente informacion estructural mas precisa (componentes, props, layout CSS) que complementa el JSON brief. Funciona con codigo de cualquier fuente — no solo Figma.
 
 ### Regla de agente activa
 
@@ -228,7 +228,7 @@ Usa el **prompt de Step 2 de Path 3**, que incluye la seccion critica **"Design 
 
 | Aspecto | Path 1 (Imagen Clone) | Path 2 (Codigo Clone) | Path 3 (Wireframe HiFi) |
 |---------|:---------------------:|:---------------------:|:------------------------:|
-| **Input** | Screenshot web real | Codigo Figma export | Wireframe low-fi |
+| **Input** | Screenshot web real | Codigo UI (cualquier fuente) | Wireframe low-fi |
 | **Output** | Clon visual del input | Clon visual del input | HiFi con estilo del DS |
 | **Modifica colors.js** | SI | SI | NO |
 | **Modifica globals.css** | SI | SI | NO |
