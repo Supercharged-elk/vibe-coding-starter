@@ -1,0 +1,108 @@
+---
+description: IBM Carbon Design System v11 identity - APPLY when generating any UI component, page, or layout
+globs:
+alwaysApply: true
+---
+
+# Design System: IBM Carbon v11
+
+All generated UI must follow the IBM Carbon Design System. Do NOT use default Shadcn styling.
+
+## Source of Truth
+
+- Numeric palette: `data/config/colors.js`
+- Semantic variables: `css/globals.css`
+- Tailwind extensions: `tailwind.config.js`
+- Components: `components/shared/ui/`
+- DS manifest: `design-systems/ibm-carbon/design-system.config.json`
+
+## Color Palette
+
+### Primary (Blue)
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `primary-100` / `primary-200` | `#a6c8ff` | Backgrounds, light accents |
+| `primary-300` / `primary-400` | `#78a9ff` | Borders (dark mode), hover backgrounds |
+| `primary-500` / `primary-600` | `#0f62fe` | **Primary actions**, buttons, links |
+| `primary-700` / `primary-800` | `#0043ce` | Hover states, active states |
+| `primary-900` | `#002d9c` | Dark accents |
+
+### Secondary (Green)
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `secondary-100` / `secondary-200` | `#a7f0ba` | Light backgrounds |
+| `secondary-300` / `secondary-400` | `#6fdc8c` | Borders (dark mode) |
+| `secondary-500` / `secondary-600` | `#42be65` | **Secondary actions**, success states |
+| `secondary-700` / `secondary-800` | `#24a148` | Hover states |
+| `secondary-900` | `#198038` | Dark accents |
+
+### Semantic
+- **Destructive/Danger**: `bg-destructive` (Red — `#da1e28`)
+- **Background**: `bg-background` (White light / `#161616` dark)
+- **Surface**: `bg-card` (`#fafafa` light / `#1a1a1a` dark)
+- **Muted**: `bg-muted` (Gray `#f4f4f4` light)
+- **Border**: `border-border` (`#e0e0e0` light / `#393939` dark)
+
+## Color Usage Rules
+
+- **Primary actions** (buttons, links): `bg-primary-500`, hover: `bg-primary-700`
+- **Secondary actions**: `bg-secondary-500`, hover: `bg-secondary-700`
+- **Surfaces**: `bg-background`, `bg-card`, `bg-muted` (CSS variable tokens)
+- **Text**: `text-foreground`, `text-muted-foreground` (CSS variable tokens)
+- **Foreground on colored bg**: `text-primary-foreground` (white)
+- NEVER use hardcoded hex values
+- NEVER use `text-white` or `text-black` — use `text-primary-foreground` or `text-foreground`
+- ALWAYS include `dark:` variants
+
+## Typography
+
+- **Font**: IBM Plex Sans (`font-sans` / `font-display`)
+- **Headings**: font-display, weights 300-600
+  - Large headings (h1, h2): weight 300 (light)
+  - Small headings (h3-h6): weight 600 (semibold)
+- **Body**: 14px (`text-sm`), weight 400
+- **Body large**: 16px (`text-base`), weight 400
+- **Caption**: 12px (`text-xs`), weight 400
+
+## Border Radius
+
+**Carbon uses sharp corners (0px) for most interactive elements.**
+
+- Buttons: `rounded-md` → resolves to **0px**
+- Inputs: `rounded-md` → resolves to **0px**
+- Cards: `rounded-md` → resolves to **0px**
+- Dropdowns/Popovers: `rounded-md` → resolves to **0px**
+- Pills/Tags: `rounded-full` → resolves to **9999px** (only exception)
+- Modals: `rounded-lg` → resolves to **4px** (slight rounding)
+
+## Shadows / Elevation
+
+- Cards at rest: `shadow-sm` — `0 2px 6px 0 rgba(0, 0, 0, 0.15)`
+- Cards hovered: `shadow` — `0 2px 6px 0 rgba(0, 0, 0, 0.2)`
+- Dropdowns: `shadow-md` — `0 6px 12px 0 rgba(0, 0, 0, 0.15)`
+- Modals: `shadow-lg` — `0 12px 24px 0 rgba(0, 0, 0, 0.1)`
+
+## Spacing
+
+- Base unit: 8px
+- Button padding: `px-4 py-2` (16px / 8px)
+- Card padding: `p-4` (16px)
+- Input padding: `px-4 py-3` (16px / 12px)
+- Section gaps: `gap-6` (24px) or `gap-8` (32px)
+
+## Component Patterns
+
+When creating new components:
+1. Import from `@/components/shared/ui/`
+2. Use existing Button, Card, Input, Dialog, etc.
+3. Apply colors via token classes (NOT hex values)
+4. Keep interactive elements with sharp corners (0px radius)
+5. Use Carbon-appropriate spacing (8px grid)
+
+## Anti-Patterns
+
+- DO NOT use warm grays — Carbon uses cool, neutral grays
+- DO NOT use rounded buttons — Carbon buttons have 0px radius
+- DO NOT use heavy shadows — Carbon uses subtle elevation
+- DO NOT use bold heading weights for large text — Carbon uses light (300) for h1/h2
+- DO NOT hardcode colors — always use Tailwind token classes

@@ -1,4 +1,4 @@
-import { Nunito_Sans } from 'next/font/google';
+import { IBM_Plex_Sans } from 'next/font/google';
 import { siteConfig } from '@/data/config/site.settings';
 import { ThemeProviders } from './theme-providers';
 import { Metadata } from 'next';
@@ -9,16 +9,18 @@ import '@/css/globals.css';
 import { SearchProvider } from '@/components/shared/SearchProvider';
 import { AnalyticsWrapper } from '@/components/shared/Analytics';
 
-const displayFont = Nunito_Sans({
+const displayFont = IBM_Plex_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-space-display',
+  weight: ['300', '400', '500', '600', '700'],
 });
 
-const baseFont = Nunito_Sans({
+const baseFont = IBM_Plex_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-space-default',
+  weight: ['300', '400', '500', '600', '700'],
 });
 
 const globalColors = colors;

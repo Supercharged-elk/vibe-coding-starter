@@ -48,6 +48,36 @@ Guidelines for continuously improving rules based on emerging code patterns, inc
 
 @.cursor/rules/self-improve.mdc
 
+## Design System Injection
+
+When the user asks to inject, migrate, or set up a Design System, follow the COMPLETE guide in `@.cursor/rules/design-system-migration.mdc`.
+
+### Key Architecture: Dual Color System
+
+This repo has TWO color systems that BOTH must be updated:
+1. **Numeric palette** (`data/config/colors.js`) — drives `bg-primary-100` to `bg-primary-900`
+2. **Shadcn semantic vars** (`css/globals.css`) — drives `bg-background`, `text-foreground`, `bg-muted`, etc.
+
+### Strategy: Config-First
+
+1. **Git branch**: `git checkout -b ds/[name]-injection`
+2. **Read DS manifest**: Check for `./design-systems/[name]/design-system.config.json`
+3. **Update 4 config files** (this changes ~80% of visuals automatically):
+   - `data/config/colors.js` — primary/secondary palette
+   - `css/globals.css` — ALL Shadcn CSS variables (light + dark)
+   - `app/layout.tsx` — font import
+   - `tailwind.config.js` — radius, shadows, spacing extensions
+4. **Visual audit** — run `npm run dev`, identify components that still look wrong
+5. **Fix only mismatched components** — adjust Tailwind classes, preserve structure/API
+6. **Create agent rules** — `.cursor/rules/design-system-brand.mdc`
+7. **Verify** — `npx tsc --noEmit`, visual check, coherence test
+
+### Trigger Keywords
+
+- "inject design system" / "migrate design system"
+- "apply [Name] Design System" / "transform to [Name]"
+- Working with `./design-systems/` folder
+
 ## Git & Version Control
 
 - Add and commit automatically whenever an entire task is finished
@@ -67,8 +97,9 @@ Check for console errors and ensure the implemented functionality is working as 
 **ALWAYS follow these instructions before completing a task.**
 
 Automatically use the IDE's built-in diagnostics tool to check for linting and type errors:
-   - Run `mcp__ide__getDiagnostics` to check all files for diagnostics
-   - Fix any linting or type errors before considering the task complete
-   - Do this for *each* file you create or edit
+
+- Run `mcp__ide__getDiagnostics` to check all files for diagnostics
+- Fix any linting or type errors before considering the task complete
+- Do this for _each_ file you create or edit
 
 This is a CRITICAL step that must NEVER be skipped when working on any code-related task.

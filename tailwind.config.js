@@ -16,6 +16,24 @@ module.exports = {
   darkMode: ['class'],
   theme: {
     extend: {
+      /* IBM Carbon Design System v11 */
+      borderRadius: {
+        none: '0px',
+        sm: '0px',
+        DEFAULT: '0px',
+        md: '0px',
+        lg: '4px',
+        xl: '8px',
+        '2xl': '12px',
+        full: '9999px',
+      },
+      boxShadow: {
+        sm: '0 2px 6px 0 rgba(0, 0, 0, 0.15)',
+        DEFAULT: '0 2px 6px 0 rgba(0, 0, 0, 0.2)',
+        md: '0 6px 12px 0 rgba(0, 0, 0, 0.15)',
+        lg: '0 12px 24px 0 rgba(0, 0, 0, 0.1)',
+        xl: '0 16px 32px 0 rgba(0, 0, 0, 0.12)',
+      },
       lineHeight: {
         11: '2.75rem',
         12: '3rem',

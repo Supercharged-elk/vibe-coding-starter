@@ -43,3 +43,9 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# design system cloned repos (ignore source code, keep manifests and README)
+/design-systems/*/src/
+/design-systems/*/packages/
+/design-systems/*/node_modules/
+/design-systems/*/.git/
