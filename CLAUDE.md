@@ -88,16 +88,16 @@ The brief is the source of truth for BOTH structure AND style. Update `colors.js
 
 **Trigger**: User provides a website screenshot/image + JSON brief + prompt says "update colors.js to match the design brief"
 
-### Path 2: Figma Code → Clone (faithful replication)
+### Path 2: UI Code (any source) → Clone (faithful replication)
 
-**Input**: Exported Figma code (via Figma-to-Tailwind/React plugin) + JSON design brief
+**Input**: UI code from any source (Figma export, Mobbin, Variant UI, Dribbble, CodePen, component libraries, etc.) + JSON design brief
 **Goal**: Same as Path 1, but input is code instead of image
 **Config files**: MODIFY to match the brief's tokens
 **Rule**: `@.cursor/rules/clone-implementation.mdc`
 
-Same workflow as Path 1. The exported code provides additional structural detail beyond what an image can convey.
+Same workflow as Path 1. The code provides additional structural detail (components, props, layout CSS) beyond what an image can convey.
 
-**Trigger**: User provides Figma exported code + JSON brief + prompt says "update colors.js to match the design brief"
+**Trigger**: User provides UI code + JSON brief + prompt says "update colors.js to match the design brief"
 
 ### Path 3: Wireframe → High Fidelity (DS-aware)
 

@@ -177,8 +177,9 @@ Every workflow follows a **2-step flow**:
 
 | Document | Content |
 |----------|---------|
-| [PROMPTS.md](PROMPTS.md) | All copy-paste prompts for the 3 workflows |
+| [PROMPTS.md](PROMPTS.md) | All copy-paste prompts for the 3 workflows + DS creation guide |
 | [WORKFLOWS_GUIDE.md](WORKFLOWS_GUIDE.md) | Deep technical guide: step-by-step for each path, architecture, DS schema, examples |
+| [REPOSITORY_LOGIC.md](REPOSITORY_LOGIC.md) | Complete architecture reference: color pipeline, component tiers, build system, extension points |
 | [CLAUDE.md](CLAUDE.md) | Agent instructions (read by AI tools automatically) |
 
 ---
