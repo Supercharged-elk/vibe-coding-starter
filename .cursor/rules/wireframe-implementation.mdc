@@ -1,0 +1,193 @@
+---
+description: When implementing a UI from a wireframe brief while preserving the existing Design System
+globs:
+  - "app/**/page.tsx"
+  - "components/**/*.tsx"
+alwaysApply: false
+---
+
+# Wireframe Implementation (DS-Aware Mode)
+
+This rule applies when implementing UI from a wireframe/design brief while PRESERVING the existing Design System.
+
+**DO NOT apply this rule** when the user explicitly asks to inject, migrate, or set up a new Design System. That is covered by `design-system-migration.mdc`.
+
+## When to Apply
+
+Apply this rule when:
+- The user provides a UI wireframe/design brief AND the repo already has a configured DS
+- The user says "implement this wireframe", "build this page", or provides a JSON design spec
+- The repo has non-default values in `data/config/colors.js` (e.g., IBM Carbon, Material, etc.)
+
+Do NOT apply when the user says "inject", "migrate", or "apply [Name] Design System".
+
+## Pre-Implementation Checklist
+
+Before writing any component code:
+
+1. **Read the DS config**: Check `design-systems/[active]/design-system.config.json` if it exists
+2. **Read current tokens**:
+   - `data/config/colors.js` — know your primary/secondary palette
+   - `css/globals.css` — know your semantic CSS variables
+   - `tailwind.config.js` — know your radius, shadows, font stack
+   - `app/layout.tsx` — know your font imports
+3. **Build a mental token map**: brief tokens -> repo tokens
+4. **Confirm with yourself**: "I will NOT modify any DS config file"
+
+## Files you MUST NOT modify
+
+| File | Why |
+|------|-----|
+| `data/config/colors.js` | The palette IS the brand identity |
+| `css/globals.css` | Shadcn semantic variables are calibrated to the DS |
+| `tailwind.config.js` | Radius, shadows, fonts define the DS personality |
+| `app/layout.tsx` | Font imports are part of the DS |
+
+If you find yourself about to edit any of these files, STOP. You are in the wrong mode.
+
+## Token Translation Strategy
+
+### Colors
+
+The brief's color values are visual INTENT, not literal requirements. Translate to DS tokens:
+
+| Brief specifies | Translation approach |
+|-----------------|---------------------|
+| "black bg button" | Use `bg-primary-500` (the DS primary action color) |
+| "outlined button with black border" | Use `border-primary-500` or `border-foreground` |
+| "surface_light: #F5F5F5" | Use `bg-muted` or `bg-neutral-100` (closest DS token) |
+| "surface_dark: #3F3F3F" | Use `bg-neutral-700` or `bg-card` in dark mode |
+| "text_secondary: gray_700" | Use `text-muted-foreground` (semantic) or `text-gray-700` |
+| "primary action color: #XXXX" | Use `bg-primary-500` / `text-primary-500` (always use repo primary) |
+| "accent color: #XXXX" | Use `bg-secondary-500` / `text-secondary-500` (always use repo secondary) |
+
+### Border Radius
+
+The DS border-radius scale is authoritative. The brief's radius values indicate shape INTENT:
+
+| Brief specifies | Translation approach |
+|-----------------|---------------------|
+| "pill: 80px" or "rounded-full" | Check DS. If Carbon (0px), use `rounded-none`. If Material (8px), use `rounded-lg` |
+| "card: 20px" | Use the DS largest non-full radius (`rounded-xl` or `rounded-2xl`) |
+| "chip: 10px" | Use `rounded-md` or `rounded-lg` per DS scale |
+| "sharp corners" | Use `rounded-none` (this aligns with most DS scales) |
+
+### Typography
+
+The DS font stack is authoritative:
+
+| Brief specifies | Translation approach |
+|-----------------|---------------------|
+| Any font name (e.g., "Helvetica Neue") | Use `font-sans` (resolves to DS font via CSS variable) |
+| "display font: X" | Use `font-display` (resolves to DS display font) |
+| "48px h1" | Use `text-5xl` (closest Tailwind token) |
+| "14px body" | Use `text-sm` |
+| "weight 400 headlines" | Use `font-normal` |
+| "14px bold uppercase tracking" | Use `text-sm font-bold uppercase tracking-wider` |
+
+### Shadows
+
+The DS shadow scale is authoritative:
+
+| Brief specifies | Translation approach |
+|-----------------|---------------------|
+| "flat, no shadows" | If DS has subtle shadows, still consider `shadow-sm` or use `shadow-none` |
+| "elevated card" | Use `shadow-md` or `shadow-lg` per DS scale |
+| "deep shadow" | Use `shadow-xl` per DS scale |
+
+### Spacing
+
+Brief px values are layout INTENT, not literal requirements:
+
+| Brief specifies | Translation approach |
+|-----------------|---------------------|
+| "120px horizontal padding" | Use `px-8 lg:px-16` (Tailwind responsive scale) |
+| "24px gap" | Use `gap-6` |
+| "48px section spacing" | Use `py-12` |
+| "8px grid base" | Use Tailwind 2-unit increments (`p-2`, `p-4`, `p-6`, etc.) |
+
+## What TO extract from the wireframe
+
+These aspects come FROM the brief and should be implemented faithfully:
+
+- **Section order**: The sequence of content blocks (Header -> Hero -> CTA -> etc.)
+- **Content**: Headlines, paragraphs, button labels, nav items, sample data
+- **Layout grid**: Column counts, flex direction, stacking behavior
+- **Responsive behavior**: What changes at each breakpoint
+- **Interactions**: Hover states, mobile menu collapse, toggle behavior
+- **Semantics**: HTML element choices (h1, h2, nav, footer, time, article)
+- **Component decomposition**: Which parts are reusable vs. inline
+- **Content hierarchy**: What is emphasized, what is secondary
+- **Dark mode behavior**: Which sections invert, which stay consistent
+
+## Example: Translating a Button
+
+Brief specifies:
+```json
+{
+  "type": "outlined_pill",
+  "border": "1px black",
+  "bg": "transparent",
+  "radius": 80,
+  "hover": "invert to black bg + white text"
+}
+```
+
+With IBM Carbon DS (radius 0px, blue primary):
+```tsx
+// Structure from brief: outlined button with invert hover
+// Style from DS: sharp corners, primary blue color
+<button className={clsx(
+  'border border-primary-500 bg-transparent text-primary-500',
+  'hover:bg-primary-500 hover:text-white',
+  'dark:border-primary-300 dark:text-primary-300',
+  'dark:hover:bg-primary-300 dark:hover:text-gray-900',
+  'rounded-none px-4 py-3 text-sm font-medium',
+  'transition-colors'
+)}>
+  Know more about EAPN
+</button>
+```
+
+Note: `rounded-full` (pill) from brief becomes `rounded-none` (Carbon identity). The INTERACTION (invert on hover) is preserved, but the VISUAL TOKENS come from the DS.
+
+## Example: Translating a Card
+
+Brief specifies:
+```json
+{
+  "type": "news_card",
+  "radius": 20,
+  "shadow": "none",
+  "bg": "#FFFFFF",
+  "border": "1px #E0E0E0"
+}
+```
+
+With IBM Carbon DS:
+```tsx
+<article className={clsx(
+  'bg-card text-card-foreground',
+  'border rounded-lg',        // Carbon: rounded-lg = 4px (not 20px from brief)
+  'shadow-sm',                // Carbon has subtle shadows, use them
+  'overflow-hidden'
+)}>
+  {/* card content */}
+</article>
+```
+
+## Validation Checklist
+
+After implementation, verify:
+
+- [ ] `data/config/colors.js` was NOT modified
+- [ ] `css/globals.css` was NOT modified
+- [ ] `tailwind.config.js` was NOT modified
+- [ ] `app/layout.tsx` font imports were NOT modified
+- [ ] Buttons use `bg-primary-*` instead of `bg-black` or brief hex colors
+- [ ] Border radius matches the DS scale, not the brief's px values
+- [ ] Colors use DS tokens (`primary-*`, `secondary-*`, semantic vars)
+- [ ] Font renders as the DS font (not the brief's font)
+- [ ] Dark mode works correctly with `dark:` classes
+- [ ] Structure (sections, grids, content) is faithful to the wireframe
+- [ ] No hardcoded hex values, px values, or magic strings in className

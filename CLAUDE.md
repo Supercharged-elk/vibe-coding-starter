@@ -78,6 +78,46 @@ This repo has TWO color systems that BOTH must be updated:
 - "apply [Name] Design System" / "transform to [Name]"
 - Working with `./design-systems/` folder
 
+## Wireframe Implementation (DS-Aware Mode)
+
+When the user provides a UI wireframe/design brief and the repo already has a Design System configured, follow `@.cursor/rules/wireframe-implementation.mdc`.
+
+**This is a DIFFERENT mode from Design System Injection.** The agent must NOT modify DS config files.
+
+### How to detect which mode to use
+
+- **DS Injection mode**: User says "inject", "migrate", "apply [Name] design system"
+- **Wireframe mode (DS-Aware)**: User provides a UI brief/wireframe AND the repo already has a configured DS (check if `data/config/colors.js` has non-default values)
+
+### Core Rule: Separate Structure from Style
+
+- **Structure** (from the wireframe brief): sections, layout grids, content hierarchy, responsive behavior, interactions, semantic HTML, sample data
+- **Style** (from the repo DS): colors, fonts, border-radius, shadows, spacing scale, CSS variables
+
+### DO NOT modify these files in Wireframe mode:
+- `data/config/colors.js`
+- `css/globals.css`
+- `tailwind.config.js`
+- `app/layout.tsx` font imports
+
+### Token Translation
+
+When the brief specifies visual tokens, translate them to the EXISTING DS:
+
+| Brief says | Agent uses |
+|------------|-----------|
+| "pill-shaped buttons (80px radius)" | DS border-radius (e.g., `rounded-none` for Carbon) |
+| "bg: #3F3F3F" | `bg-neutral-700` (closest Tailwind token) |
+| "primary action: black bg" | `bg-primary-500` (repo primary color) |
+| "Helvetica Neue font" | `font-sans` (repo font via CSS variable) |
+| "card radius: 20px" | DS largest radius token (e.g., `rounded-lg` for Carbon) |
+
+### Trigger Phrases
+
+- "implement this wireframe" / "build this page"
+- Any UI brief with a JSON design spec when DS is already configured
+- "implement this UI using the existing design system"
+
 ## Git & Version Control
 
 - Add and commit automatically whenever an entire task is finished
