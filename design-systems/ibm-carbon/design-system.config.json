@@ -1,0 +1,351 @@
+{
+  "name": "IBM Carbon Design System",
+  "version": "11",
+  "source": "https://carbondesignsystem.com",
+  "description": "IBM's open-source design system for digital products. Characterized by blue primary (#0f62fe), IBM Plex Sans font, sharp corners (0px radius on buttons/inputs), cool neutral grays, and an 8px spacing grid.",
+
+  "colors": {
+    "primary": {
+      "lighter": "#a6c8ff",
+      "light": "#78a9ff",
+      "main": "#0f62fe",
+      "dark": "#0043ce",
+      "darker": "#002d9c"
+    },
+    "secondary": {
+      "lighter": "#a7f0ba",
+      "light": "#6fdc8c",
+      "main": "#42be65",
+      "dark": "#24a148",
+      "darker": "#198038"
+    }
+  },
+
+  "neutrals": {
+    "50": "#f4f4f4",
+    "100": "#e0e0e0",
+    "200": "#c6c6c6",
+    "300": "#a8a8a8",
+    "400": "#8d8d8d",
+    "500": "#6f6f6f",
+    "600": "#525252",
+    "700": "#393939",
+    "800": "#262626",
+    "900": "#161616"
+  },
+
+  "cssVariables": {
+    "light": {
+      "background": "0 0% 100%",
+      "foreground": "0 0% 9%",
+      "card": "0 0% 98%",
+      "card-foreground": "0 0% 9%",
+      "popover": "0 0% 100%",
+      "popover-foreground": "0 0% 9%",
+      "primary-foreground": "0 0% 100%",
+      "secondary": "210 7% 96%",
+      "secondary-foreground": "0 0% 9%",
+      "muted": "210 7% 96%",
+      "muted-foreground": "0 0% 44%",
+      "accent": "210 7% 96%",
+      "accent-foreground": "0 0% 9%",
+      "destructive": "0 75% 49%",
+      "destructive-foreground": "0 0% 100%",
+      "border": "0 0% 88%",
+      "input": "0 0% 88%",
+      "radius": "0rem"
+    },
+    "dark": {
+      "background": "0 0% 6%",
+      "foreground": "0 0% 95%",
+      "card": "0 0% 10%",
+      "card-foreground": "0 0% 95%",
+      "popover": "0 0% 10%",
+      "popover-foreground": "0 0% 95%",
+      "primary-foreground": "0 0% 100%",
+      "secondary": "0 0% 15%",
+      "secondary-foreground": "0 0% 95%",
+      "muted": "0 0% 15%",
+      "muted-foreground": "0 0% 55%",
+      "accent": "0 0% 15%",
+      "accent-foreground": "0 0% 95%",
+      "destructive": "0 53% 39%",
+      "destructive-foreground": "0 0% 100%",
+      "border": "0 0% 22%",
+      "input": "0 0% 22%"
+    }
+  },
+
+  "semanticColors": {
+    "interactive": "#0f62fe",
+    "interactiveHover": "#0043ce",
+    "interactiveActive": "#002d9c",
+    "danger": "#da1e28",
+    "dangerHover": "#b81922",
+    "warning": "#f1c21b",
+    "warningText": "#000000",
+    "success": "#24a148",
+    "info": "#0043ce",
+    "disabled": "#c6c6c6",
+    "disabledText": "#8d8d8d",
+    "focus": "#0f62fe",
+    "focusInset": "#ffffff",
+    "borderSubtle": "#e0e0e0",
+    "borderStrong": "#8d8d8d",
+    "textPrimary": "#161616",
+    "textSecondary": "#525252",
+    "textPlaceholder": "#a8a8a8",
+    "textOnColor": "#ffffff",
+    "textDisabled": "#c6c6c6",
+    "linkPrimary": "#0f62fe",
+    "linkHover": "#0043ce",
+    "backgroundHover": "rgba(141, 141, 141, 0.12)",
+    "backgroundActive": "rgba(141, 141, 141, 0.5)",
+    "layerOne": "#f4f4f4",
+    "layerTwo": "#ffffff",
+    "layerThree": "#f4f4f4"
+  },
+
+  "semanticColorsDark": {
+    "interactive": "#78a9ff",
+    "interactiveHover": "#a6c8ff",
+    "interactiveActive": "#4589ff",
+    "danger": "#ff8389",
+    "dangerHover": "#ffb3b8",
+    "warning": "#f1c21b",
+    "warningText": "#000000",
+    "success": "#42be65",
+    "info": "#4589ff",
+    "disabled": "#525252",
+    "disabledText": "#6f6f6f",
+    "focus": "#ffffff",
+    "focusInset": "#0f62fe",
+    "borderSubtle": "#393939",
+    "borderStrong": "#6f6f6f",
+    "textPrimary": "#f4f4f4",
+    "textSecondary": "#c6c6c6",
+    "textPlaceholder": "#6f6f6f",
+    "textOnColor": "#ffffff",
+    "textDisabled": "#525252",
+    "linkPrimary": "#78a9ff",
+    "linkHover": "#a6c8ff",
+    "backgroundHover": "rgba(141, 141, 141, 0.16)",
+    "backgroundActive": "rgba(141, 141, 141, 0.4)",
+    "layerOne": "#262626",
+    "layerTwo": "#393939",
+    "layerThree": "#262626"
+  },
+
+  "typography": {
+    "fontFamily": "IBM Plex Sans",
+    "googleFontsImport": "IBM_Plex_Sans",
+    "displayFont": "IBM Plex Sans",
+    "monoFont": "IBM Plex Mono",
+    "googleFontsImportMono": "IBM_Plex_Mono",
+    "weights": [300, 400, 500, 600, 700],
+    "scale": {
+      "caption": "12px / 16px / weight 400",
+      "label": "12px / 16px / weight 600",
+      "bodyCompact": "14px / 18px / weight 400",
+      "body": "14px / 20px / weight 400",
+      "bodyLarge": "16px / 24px / weight 400",
+      "heading01": "14px / 20px / weight 600",
+      "heading02": "16px / 24px / weight 600",
+      "heading03": "20px / 28px / weight 400",
+      "heading04": "28px / 36px / weight 400",
+      "heading05": "32px / 40px / weight 400",
+      "heading06": "42px / 50px / weight 300",
+      "heading07": "54px / 64px / weight 300"
+    }
+  },
+
+  "borderRadius": {
+    "none": "0px",
+    "sm": "0px",
+    "DEFAULT": "0px",
+    "md": "0px",
+    "lg": "4px",
+    "xl": "8px",
+    "full": "9999px"
+  },
+
+  "shadows": {
+    "sm": "0 2px 6px 0 rgba(0, 0, 0, 0.15)",
+    "DEFAULT": "0 2px 6px 0 rgba(0, 0, 0, 0.2)",
+    "md": "0 6px 12px 0 rgba(0, 0, 0, 0.15)",
+    "lg": "0 12px 24px 0 rgba(0, 0, 0, 0.1)",
+    "xl": "0 16px 32px 0 rgba(0, 0, 0, 0.12)"
+  },
+
+  "spacing": {
+    "baseUnit": "8px",
+    "scale": {
+      "01": "2px",
+      "02": "4px",
+      "03": "8px",
+      "04": "12px",
+      "05": "16px",
+      "06": "24px",
+      "07": "32px",
+      "08": "40px",
+      "09": "48px",
+      "10": "64px",
+      "11": "80px",
+      "12": "96px",
+      "13": "160px"
+    },
+    "componentSpacing": {
+      "buttonPadding": "14px 16px",
+      "buttonPaddingSm": "8px 16px",
+      "buttonPaddingLg": "16px 24px",
+      "cardPadding": "16px",
+      "inputPadding": "12px 16px",
+      "inputHeight": "40px",
+      "inputHeightSm": "32px",
+      "inputHeightLg": "48px"
+    }
+  },
+
+  "focus": {
+    "style": "outline",
+    "width": "2px",
+    "color": "#0f62fe",
+    "insetColor": "#ffffff",
+    "offset": "-1px",
+    "tailwindPattern": "focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px]",
+    "replacesPattern": "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+  },
+
+  "transitions": {
+    "duration": {
+      "fast": "70ms",
+      "moderate": "150ms",
+      "slow": "240ms"
+    },
+    "easing": {
+      "standard": "cubic-bezier(0.2, 0, 0.38, 0.9)",
+      "entrance": "cubic-bezier(0, 0, 0.38, 0.9)",
+      "exit": "cubic-bezier(0.2, 0, 1, 0.9)"
+    }
+  },
+
+  "componentOverrides": {
+    "button": {
+      "base": "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px] disabled:pointer-events-none disabled:bg-[--ds-disabled] disabled:text-[--ds-disabled-text]",
+      "variants": {
+        "default": "bg-primary-500 text-primary-foreground hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-700",
+        "primary": "bg-primary-500 text-primary-foreground hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-700",
+        "secondary": "bg-secondary-500 text-primary-foreground hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-700",
+        "destructive": "bg-[--ds-danger] text-primary-foreground hover:bg-[--ds-danger-hover]",
+        "outline": "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        "outlinePrimary": "border border-primary-500 dark:border-primary-300 hover:bg-primary-100/20 dark:hover:bg-primary-900/30",
+        "outlineSecondary": "border border-secondary-500 dark:border-secondary-300 hover:bg-secondary-100/20 dark:hover:bg-secondary-900/30",
+        "ghost": "hover:bg-accent hover:text-accent-foreground",
+        "link": "text-[--ds-link-primary] underline-offset-4 hover:underline hover:text-[--ds-link-hover]"
+      },
+      "sizes": {
+        "sm": "h-8 rounded-none px-4 py-2",
+        "default": "h-10 rounded-none px-4 py-3.5",
+        "lg": "h-12 rounded-none px-6 py-4",
+        "xl": "h-12 rounded-none px-6 sm:px-10 py-4 text-md",
+        "icon": "h-10 w-10 rounded-none"
+      }
+    },
+
+    "badge": {
+      "variants": {
+        "default": "border-transparent bg-primary-500 text-primary-foreground hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-700",
+        "secondary": "border-transparent bg-secondary-500 text-primary-foreground hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-700",
+        "destructive": "border-transparent bg-[--ds-danger] text-primary-foreground hover:bg-[--ds-danger-hover]"
+      }
+    },
+
+    "switch": {
+      "classReplacements": {
+        "data-[state=checked]:bg-green-500": "data-[state=checked]:bg-primary-500",
+        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background": "focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px]"
+      }
+    },
+
+    "checkbox": {
+      "classReplacements": {
+        "bg-white dark:bg-neutral-500": "bg-background",
+        "border-neutral-400 dark:border-neutral-800": "border-input",
+        "data-[state=checked]:bg-primary-500/50": "data-[state=checked]:bg-primary-500",
+        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2": "focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px]"
+      }
+    },
+
+    "toast": {
+      "classReplacements": {
+        "group-[.destructive]:text-red-300": "group-[.destructive]:text-destructive-foreground/70",
+        "group-[.destructive]:hover:text-red-50": "group-[.destructive]:hover:text-destructive-foreground",
+        "group-[.destructive]:focus:ring-red-400": "group-[.destructive]:focus:outline-[--ds-danger]",
+        "group-[.destructive]:focus:ring-offset-red-600": ""
+      }
+    },
+
+    "progress": {
+      "classReplacements": {
+        "bg-primary-100/50 dark:bg-neutral-800": "bg-muted dark:bg-muted",
+        "rounded-full": "rounded-none"
+      }
+    },
+
+    "tabs": {
+      "tabsList": "inline-flex h-10 items-center justify-start border-b border-[--ds-border-subtle] bg-transparent p-0 text-muted-foreground",
+      "tabsTrigger": "inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px] disabled:pointer-events-none disabled:opacity-50 border-b-2 border-transparent data-[state=active]:border-primary-500 data-[state=active]:text-foreground"
+    },
+
+    "dialog": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "sheet": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "drawer": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "alert-dialog": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "input": {
+      "classReplacements": {
+        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2": "focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px]"
+      }
+    },
+
+    "select": {
+      "classReplacements": {
+        "focus:ring-2 focus:ring-ring focus:ring-offset-2": "focus:outline-2 focus:outline-[--ds-focus] focus:outline-offset-[-1px]"
+      }
+    },
+
+    "cta-button": {
+      "classReplacements": {
+        "bg-neutral-800/95 dark:bg-neutral-900/90": "bg-primary-500 dark:bg-primary-500",
+        "hover:bg-black dark:hover:bg-black": "hover:bg-primary-700 dark:hover:bg-primary-700",
+        "text-white": "text-primary-foreground",
+        "hover:text-white": "hover:text-primary-foreground"
+      }
+    }
+  },
+
+  "notes": {
+    "borderRadiusPhilosophy": "Carbon uses 0px radius for most interactive elements (buttons, inputs, dropdowns). Only pills/tags use rounded. This is a defining visual characteristic.",
+    "colorPhilosophy": "Carbon uses a cool, neutral gray palette (no warm tints). Blue (#0f62fe) is the primary interactive color. The palette is designed for enterprise accessibility (WCAG AA).",
+    "typographyPhilosophy": "IBM Plex Sans with lighter heading weights (300-400) for large headings, semibold (600) for small headings. Body text at 14px."
+  }
+}

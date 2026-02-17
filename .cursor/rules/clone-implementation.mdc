@@ -1,0 +1,115 @@
+---
+description: Clone/Replicate Mode - Implement UI from an image or exported Figma code, adopting the SOURCE design tokens
+globs:
+  - "app/**/page.tsx"
+  - "components/**/*.tsx"
+  - "data/config/colors.js"
+  - "css/globals.css"
+alwaysApply: false
+---
+
+# Clone/Replicate Mode (Paths 1 & 2)
+
+This rule applies when implementing UI from a **real website screenshot** (Path 1) or **exported Figma code** (Path 2). The goal is to faithfully replicate the source design, adopting its visual tokens into the repo.
+
+## When to Apply
+
+Apply this rule when:
+- The user provides a **screenshot of a real website** and a JSON design brief
+- The user provides **exported Figma code** (via Figma-to-Tailwind/React plugin) and a JSON design brief
+- The prompt says "update colors.js to match the design brief"
+- There is NO injected Design System in the repo (or the user explicitly wants to override it)
+
+Do NOT apply when:
+- The user says "implement this wireframe" with an existing DS → use `wireframe-implementation.mdc`
+- The user says "inject design system" → use `design-system-migration.mdc`
+
+## Core Principle: Adopt the Source DS
+
+In clone mode, the design brief IS the source of truth for BOTH structure AND style. You MUST update the repo's design tokens to match the brief.
+
+## Implementation Workflow
+
+### Step 1: Read the Brief Tokens
+
+Extract from the JSON brief:
+- **Color palette**: primary, secondary, neutrals, accents
+- **Typography**: font family, sizes, weights
+- **Border radius**: button radius, card radius, chip radius
+- **Shadows**: card shadows, elevation levels
+- **Spacing**: section padding, card padding, gaps
+
+### Step 2: Update Config Files
+
+**REQUIRED — Update these 4 files to match the brief:**
+
+#### 2.1 `data/config/colors.js`
+Map the brief's primary/secondary colors to the 5-level palette:
+```javascript
+const colors = {
+  primary: {
+    lighter: '#BRIEF_PRIMARY_50_OR_200',
+    light: '#BRIEF_PRIMARY_300',
+    main: '#BRIEF_PRIMARY_500',
+    dark: '#BRIEF_PRIMARY_700',
+    darker: '#BRIEF_PRIMARY_900',
+  },
+  secondary: { /* same pattern */ },
+};
+```
+
+#### 2.2 `css/globals.css`
+Update ALL Shadcn CSS variables (light + dark) to match the brief's semantics.
+Values are HSL format without wrapper: `H S% L%`.
+
+#### 2.3 `app/layout.tsx`
+Import the brief's font family from Google Fonts:
+```typescript
+import { Brief_Font } from 'next/font/google';
+```
+
+#### 2.4 `tailwind.config.js`
+Add/update borderRadius and boxShadow if the brief defines them:
+```javascript
+borderRadius: {
+  none: '0px',
+  sm: 'BRIEF_SM',
+  DEFAULT: 'BRIEF_DEFAULT',
+  // ...
+},
+```
+
+### Step 3: Implement the Structure
+
+After updating configs, build the UI:
+- Follow the brief's section composition and layout
+- Use Tailwind token classes (`bg-primary-500`, `rounded-lg`) that now resolve to the brief's values
+- Implement responsive behavior per the brief's breakpoint rules
+- Include dark mode via `dark:` classes
+
+### Step 4: Verify
+
+- Run `npx tsc --noEmit`
+- Open browser and compare with the source image/design
+- Check both light and dark mode
+- Ensure no hardcoded hex values in component files
+
+## What TO use from the brief (everything)
+
+- Colors → update `colors.js` and `globals.css`
+- Fonts → update `layout.tsx`
+- Border radius → update `tailwind.config.js`
+- Shadows → update `tailwind.config.js`
+- Layout grid, sections, content → implement in components
+- Responsive behavior → implement in components
+- Interactions (hover, focus) → implement in components
+
+## Key Difference from Wireframe Mode
+
+| Aspect | Clone Mode (this rule) | Wireframe Mode |
+|--------|----------------------|----------------|
+| Config files | **MODIFY** to match brief | DO NOT modify |
+| Brief's colors | **Adopt** into repo | Translate to existing DS |
+| Brief's radius | **Adopt** into repo | Use DS radius instead |
+| Brief's font | **Adopt** into repo | Keep DS font |
+| Goal | Faithful visual clone | Structure only, DS styling |

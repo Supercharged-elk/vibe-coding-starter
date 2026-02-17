@@ -1,0 +1,139 @@
+---
+description: Wireframe to High-Fidelity Mode - Implement UI from a wireframe while preserving the existing Design System
+globs:
+  - "app/**/page.tsx"
+  - "components/**/*.tsx"
+alwaysApply: false
+---
+
+# Wireframe → High-Fidelity Mode (Path 3)
+
+This rule applies when implementing UI from a **wireframe** (low-fidelity mockup) while PRESERVING the existing Design System that was previously injected into the repo.
+
+## Prerequisites
+
+A Design System MUST be injected into the repo BEFORE using this mode:
+- `data/config/colors.js` has DS-specific palette (not default Shipixen yellow/green)
+- `css/globals.css` has DS-specific CSS variables
+- `tailwind.config.js` has DS-specific borderRadius/shadows
+- `app/layout.tsx` has DS-specific font
+
+If no DS is injected, use Clone Mode (Paths 1/2) instead, or inject a DS first via `design-system-migration.mdc`.
+
+## When to Apply
+
+Apply this rule when:
+- The user provides a wireframe (image or code) AND the repo has an injected DS
+- The user says "implement this wireframe", "wireframe to high fidelity"
+- The prompt says "DO NOT modify design system config files"
+- The user provides a low-fidelity mockup that needs DS styling applied
+
+Do NOT apply when:
+- The user provides a real website screenshot to clone → use `clone-implementation.mdc`
+- The user says "inject design system" → use `design-system-migration.mdc`
+
+## Core Principle: Separate Structure from Style
+
+```
+STRUCTURE (from wireframe)     STYLE (from repo DS)
+- Sections and order           - Colors (colors.js)
+- Content hierarchy            - CSS Variables (globals.css)
+- Layout grids                 - Fonts (layout.tsx)
+- Responsive behavior          - Radius, shadows (tailwind.config.js)
+- Interactions                 - Component patterns (shadcn/ui)
+- Semantic HTML
+- Sample data
+```
+
+## Files you MUST NOT modify
+
+| File | Why |
+|------|-----|
+| `data/config/colors.js` | The palette IS the DS brand identity |
+| `css/globals.css` | Semantic variables are calibrated to the DS |
+| `tailwind.config.js` | Radius, shadows, fonts define the DS personality |
+| `app/layout.tsx` | Font imports are part of the DS |
+
+If you find yourself about to edit any of these files, STOP. You are in the wrong mode.
+
+## Pre-Implementation Checklist
+
+Before writing any component code:
+
+1. **Read the DS tokens**:
+   - `data/config/colors.js` → know your primary/secondary palette
+   - `css/globals.css` → know your semantic CSS variables
+   - `tailwind.config.js` → know your radius, shadows, font stack
+2. **Build a token translation map**: wireframe tokens → DS tokens
+3. **Confirm**: "I will NOT modify any config file"
+
+## Token Translation Strategy
+
+### Colors
+
+| Wireframe specifies | Translation approach |
+|---------------------|---------------------|
+| "black bg button" | `bg-primary-500` (DS primary action color) |
+| "outlined black border" | `border-primary-500` or `border-foreground` |
+| "light surface (#F5F5F5)" | `bg-muted` or `bg-neutral-100` |
+| "dark surface (#3F3F3F)" | `bg-neutral-700` |
+| "primary accent color" | `bg-primary-500` / `text-primary-500` |
+
+### Border Radius
+
+| Wireframe specifies | Translation approach |
+|---------------------|---------------------|
+| "pill: 80px" | Check DS. Use DS default button radius |
+| "card: 20px" | Use DS largest non-full radius (`rounded-xl` or `rounded-2xl`) |
+| "chip: 10px" | Use `rounded-md` or `rounded-lg` per DS scale |
+
+### Typography
+
+| Wireframe specifies | Translation approach |
+|---------------------|---------------------|
+| Any font name | `font-sans` (resolves to DS font) |
+| "display font" | `font-display` |
+| "48px heading" | `text-5xl` (closest Tailwind token) |
+| "14px bold uppercase" | `text-sm font-bold uppercase tracking-wider` |
+
+### Shadows
+
+Use the DS shadow scale. If the wireframe says "flat/no shadows" but the DS has shadows, prefer the DS shadows for consistency.
+
+## What TO extract from the wireframe
+
+- **Section order**: Header → Hero → CTA → etc.
+- **Content**: Headlines, paragraphs, button labels, nav items
+- **Layout grid**: Column counts, flex direction, stacking
+- **Responsive behavior**: What changes at each breakpoint
+- **Interactions**: Hover states, mobile menu, toggles
+- **Semantics**: HTML element choices (h1, nav, footer, time)
+- **Component decomposition**: What's reusable vs. inline
+
+## Example: Button Translation
+
+Wireframe specifies:
+```json
+{ "type": "outlined_pill", "border": "1px black", "radius": 80 }
+```
+
+If DS is IBM Carbon (radius 0px, blue primary):
+```tsx
+<button className="border border-primary-500 bg-transparent text-primary-500
+  hover:bg-primary-500 hover:text-white
+  dark:border-primary-300 dark:text-primary-300
+  rounded-none px-4 py-3 text-sm font-medium transition-colors">
+```
+
+The INTERACTION (outlined with invert hover) is preserved. The VISUAL TOKENS come from the DS.
+
+## Validation Checklist
+
+After implementation:
+- [ ] Config files (`colors.js`, `globals.css`, `tailwind.config.js`, `layout.tsx`) NOT modified
+- [ ] Buttons use DS primary color, not black or wireframe colors
+- [ ] Border radius matches DS scale, not wireframe px values
+- [ ] Font renders as DS font, not wireframe font
+- [ ] Dark mode works with `dark:` classes
+- [ ] Structure (sections, grids, content) is faithful to wireframe
+- [ ] No hardcoded hex values in className

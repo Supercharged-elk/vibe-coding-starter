@@ -1,0 +1,351 @@
+{
+  "_README": "This is a template for creating a Design System config. Copy this file to ./design-systems/[your-ds-name]/design-system.config.json and fill in all values. See design-systems/ibm-carbon/ for a complete example.",
+
+  "name": "Your Design System Name",
+  "version": "1.0",
+  "source": "https://your-design-system-docs.com",
+  "description": "Brief description of the DS visual identity: primary color, font, radius philosophy, spacing grid, etc.",
+
+  "colors": {
+    "_comment": "Primary and secondary brand palettes. 5 shades each, from lighter to darker. These map to bg-primary-100 through bg-primary-900 in Tailwind.",
+    "primary": {
+      "lighter": "#_LIGHTEST_PRIMARY",
+      "light": "#_LIGHT_PRIMARY",
+      "main": "#_MAIN_PRIMARY",
+      "dark": "#_DARK_PRIMARY",
+      "darker": "#_DARKEST_PRIMARY"
+    },
+    "secondary": {
+      "lighter": "#_LIGHTEST_SECONDARY",
+      "light": "#_LIGHT_SECONDARY",
+      "main": "#_MAIN_SECONDARY",
+      "dark": "#_DARK_SECONDARY",
+      "darker": "#_DARKEST_SECONDARY"
+    }
+  },
+
+  "neutrals": {
+    "_comment": "The DS gray scale. 10 steps from lightest (50) to darkest (900). Used for borders, disabled states, text hierarchy, and surfaces.",
+    "50": "#_GRAY_50",
+    "100": "#_GRAY_100",
+    "200": "#_GRAY_200",
+    "300": "#_GRAY_300",
+    "400": "#_GRAY_400",
+    "500": "#_GRAY_500",
+    "600": "#_GRAY_600",
+    "700": "#_GRAY_700",
+    "800": "#_GRAY_800",
+    "900": "#_GRAY_900"
+  },
+
+  "cssVariables": {
+    "_comment": "Shadcn/ui CSS custom properties. Values are HSL without hsl() wrapper: 'H S% L%'. These drive bg-background, text-foreground, bg-card, bg-muted, etc.",
+    "light": {
+      "background": "H S% L%",
+      "foreground": "H S% L%",
+      "card": "H S% L%",
+      "card-foreground": "H S% L%",
+      "popover": "H S% L%",
+      "popover-foreground": "H S% L%",
+      "primary-foreground": "H S% L%",
+      "secondary": "H S% L%",
+      "secondary-foreground": "H S% L%",
+      "muted": "H S% L%",
+      "muted-foreground": "H S% L%",
+      "accent": "H S% L%",
+      "accent-foreground": "H S% L%",
+      "destructive": "H S% L%",
+      "destructive-foreground": "H S% L%",
+      "border": "H S% L%",
+      "input": "H S% L%",
+      "radius": "0.5rem"
+    },
+    "dark": {
+      "background": "H S% L%",
+      "foreground": "H S% L%",
+      "card": "H S% L%",
+      "card-foreground": "H S% L%",
+      "popover": "H S% L%",
+      "popover-foreground": "H S% L%",
+      "primary-foreground": "H S% L%",
+      "secondary": "H S% L%",
+      "secondary-foreground": "H S% L%",
+      "muted": "H S% L%",
+      "muted-foreground": "H S% L%",
+      "accent": "H S% L%",
+      "accent-foreground": "H S% L%",
+      "destructive": "H S% L%",
+      "destructive-foreground": "H S% L%",
+      "border": "H S% L%",
+      "input": "H S% L%"
+    }
+  },
+
+  "semanticColors": {
+    "_comment": "Functional/semantic color tokens in hex. Used for interactive states, status indicators, focus rings, links, text hierarchy, and layered surfaces. These become --ds-* CSS custom properties.",
+    "interactive": "#_PRIMARY_ACTION_COLOR",
+    "interactiveHover": "#_PRIMARY_HOVER",
+    "interactiveActive": "#_PRIMARY_ACTIVE",
+    "danger": "#_ERROR_RED",
+    "dangerHover": "#_ERROR_HOVER",
+    "warning": "#_WARNING_YELLOW",
+    "warningText": "#_TEXT_ON_WARNING_BG",
+    "success": "#_SUCCESS_GREEN",
+    "info": "#_INFO_BLUE",
+    "disabled": "#_DISABLED_BG",
+    "disabledText": "#_DISABLED_TEXT",
+    "focus": "#_FOCUS_RING_COLOR",
+    "focusInset": "#_FOCUS_INSET_COLOR",
+    "borderSubtle": "#_SUBTLE_BORDER",
+    "borderStrong": "#_STRONG_BORDER",
+    "textPrimary": "#_PRIMARY_TEXT",
+    "textSecondary": "#_SECONDARY_TEXT",
+    "textPlaceholder": "#_PLACEHOLDER_TEXT",
+    "textOnColor": "#_TEXT_ON_COLORED_BG",
+    "textDisabled": "#_DISABLED_TEXT",
+    "linkPrimary": "#_LINK_COLOR",
+    "linkHover": "#_LINK_HOVER",
+    "backgroundHover": "rgba(R, G, B, A)",
+    "backgroundActive": "rgba(R, G, B, A)",
+    "layerOne": "#_FIRST_LAYER_SURFACE",
+    "layerTwo": "#_SECOND_LAYER_SURFACE",
+    "layerThree": "#_THIRD_LAYER_SURFACE"
+  },
+
+  "semanticColorsDark": {
+    "_comment": "Dark mode overrides for semantic colors. Same keys as semanticColors but with dark-mode-appropriate values.",
+    "interactive": "#_DARK_INTERACTIVE",
+    "interactiveHover": "#_DARK_INTERACTIVE_HOVER",
+    "interactiveActive": "#_DARK_INTERACTIVE_ACTIVE",
+    "danger": "#_DARK_DANGER",
+    "dangerHover": "#_DARK_DANGER_HOVER",
+    "warning": "#_DARK_WARNING",
+    "warningText": "#_DARK_WARNING_TEXT",
+    "success": "#_DARK_SUCCESS",
+    "info": "#_DARK_INFO",
+    "disabled": "#_DARK_DISABLED",
+    "disabledText": "#_DARK_DISABLED_TEXT",
+    "focus": "#_DARK_FOCUS",
+    "focusInset": "#_DARK_FOCUS_INSET",
+    "borderSubtle": "#_DARK_BORDER_SUBTLE",
+    "borderStrong": "#_DARK_BORDER_STRONG",
+    "textPrimary": "#_DARK_TEXT_PRIMARY",
+    "textSecondary": "#_DARK_TEXT_SECONDARY",
+    "textPlaceholder": "#_DARK_TEXT_PLACEHOLDER",
+    "textOnColor": "#_DARK_TEXT_ON_COLOR",
+    "textDisabled": "#_DARK_TEXT_DISABLED",
+    "linkPrimary": "#_DARK_LINK",
+    "linkHover": "#_DARK_LINK_HOVER",
+    "backgroundHover": "rgba(R, G, B, A)",
+    "backgroundActive": "rgba(R, G, B, A)",
+    "layerOne": "#_DARK_LAYER_ONE",
+    "layerTwo": "#_DARK_LAYER_TWO",
+    "layerThree": "#_DARK_LAYER_THREE"
+  },
+
+  "typography": {
+    "_comment": "Font families from Google Fonts. googleFontsImport must match the Next.js import name (underscores). weights are the font weights to load. scale defines named type sizes.",
+    "fontFamily": "Your Font Name",
+    "googleFontsImport": "Your_Font_Name",
+    "displayFont": "Your Display Font",
+    "monoFont": "Your Mono Font",
+    "weights": [300, 400, 500, 600, 700],
+    "scale": {
+      "_comment": "Named type sizes. Format: 'sizePx / lineHeightPx / weight N'. These become Tailwind fontSize extensions: text-ds-caption, text-ds-body, text-ds-heading01, etc.",
+      "caption": "12px / 16px / weight 400",
+      "label": "12px / 16px / weight 600",
+      "bodyCompact": "14px / 18px / weight 400",
+      "body": "14px / 20px / weight 400",
+      "bodyLarge": "16px / 24px / weight 400",
+      "heading01": "14px / 20px / weight 600",
+      "heading02": "16px / 24px / weight 600",
+      "heading03": "20px / 28px / weight 400",
+      "heading04": "28px / 36px / weight 400",
+      "heading05": "32px / 40px / weight 400",
+      "heading06": "42px / 50px / weight 300",
+      "heading07": "54px / 64px / weight 300"
+    }
+  },
+
+  "borderRadius": {
+    "_comment": "Border radius scale. Maps to Tailwind's rounded-* classes. Set values that define the DS personality (e.g., all 0px for sharp, or 8px+ for rounded).",
+    "none": "0px",
+    "sm": "2px",
+    "DEFAULT": "4px",
+    "md": "6px",
+    "lg": "8px",
+    "xl": "12px",
+    "full": "9999px"
+  },
+
+  "shadows": {
+    "_comment": "Box shadow scale. Maps to Tailwind's shadow-* classes.",
+    "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+    "DEFAULT": "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+  },
+
+  "spacing": {
+    "_comment": "Spacing system. baseUnit defines the grid (e.g., 8px). scale defines named steps. componentSpacing defines padding/heights for common components.",
+    "baseUnit": "8px",
+    "scale": {
+      "01": "2px",
+      "02": "4px",
+      "03": "8px",
+      "04": "12px",
+      "05": "16px",
+      "06": "24px",
+      "07": "32px",
+      "08": "40px",
+      "09": "48px",
+      "10": "64px",
+      "11": "80px",
+      "12": "96px",
+      "13": "160px"
+    },
+    "componentSpacing": {
+      "buttonPadding": "14px 16px",
+      "buttonPaddingSm": "8px 16px",
+      "buttonPaddingLg": "16px 24px",
+      "cardPadding": "16px",
+      "inputPadding": "12px 16px",
+      "inputHeight": "40px",
+      "inputHeightSm": "32px",
+      "inputHeightLg": "48px"
+    }
+  },
+
+  "focus": {
+    "_comment": "Focus ring specification. Defines how focused elements look. tailwindPattern is the class string to apply. replacesPattern is the default Shadcn focus pattern that gets replaced.",
+    "style": "outline",
+    "width": "2px",
+    "color": "#_FOCUS_COLOR",
+    "insetColor": "#_FOCUS_INSET",
+    "offset": "-1px",
+    "tailwindPattern": "focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px]",
+    "replacesPattern": "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+  },
+
+  "transitions": {
+    "_comment": "Motion/animation tokens. Maps to Tailwind transitionDuration and transitionTimingFunction extensions.",
+    "duration": {
+      "fast": "70ms",
+      "moderate": "150ms",
+      "slow": "240ms"
+    },
+    "easing": {
+      "standard": "cubic-bezier(0.2, 0, 0.38, 0.9)",
+      "entrance": "cubic-bezier(0, 0, 0.38, 0.9)",
+      "exit": "cubic-bezier(0.2, 0, 1, 0.9)"
+    }
+  },
+
+  "componentOverrides": {
+    "_comment": "Per-component Tailwind class overrides applied during DS injection. Two formats: (1) For CVA components: 'base', 'variants', 'sizes' replace the CVA definition strings. (2) For non-CVA components: 'classReplacements' is a find/replace map of class fragments. Components not listed here keep their default Shadcn styling.",
+
+    "button": {
+      "_comment": "CVA-based component. Replace base, variant, and size class strings.",
+      "base": "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors DS_FOCUS_PATTERN disabled:pointer-events-none disabled:bg-[--ds-disabled] disabled:text-[--ds-disabled-text]",
+      "variants": {
+        "default": "bg-primary-500 text-primary-foreground hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-700",
+        "primary": "bg-primary-500 text-primary-foreground hover:bg-primary-700",
+        "secondary": "bg-secondary-500 text-primary-foreground hover:bg-secondary-700",
+        "destructive": "bg-[--ds-danger] text-primary-foreground hover:bg-[--ds-danger-hover]",
+        "outline": "border border-input bg-background hover:bg-[--ds-background-hover]",
+        "ghost": "hover:bg-[--ds-background-hover]",
+        "link": "text-[--ds-link-primary] underline-offset-4 hover:underline hover:text-[--ds-link-hover]"
+      },
+      "sizes": {
+        "sm": "h-8 px-4 py-2",
+        "default": "h-10 px-4 py-3.5",
+        "lg": "h-12 px-6 py-4",
+        "icon": "h-10 w-10"
+      }
+    },
+
+    "badge": {
+      "variants": {
+        "default": "border-transparent bg-primary-500 text-primary-foreground hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-700",
+        "secondary": "border-transparent bg-secondary-500 text-primary-foreground hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-700",
+        "destructive": "border-transparent bg-[--ds-danger] text-primary-foreground hover:bg-[--ds-danger-hover]"
+      }
+    },
+
+    "switch": {
+      "_comment": "Non-CVA. Use classReplacements for surgical find/replace.",
+      "classReplacements": {
+        "data-[state=checked]:bg-green-500": "data-[state=checked]:bg-primary-500"
+      }
+    },
+
+    "checkbox": {
+      "classReplacements": {
+        "bg-white dark:bg-neutral-500": "bg-background",
+        "border-neutral-400 dark:border-neutral-800": "border-input",
+        "data-[state=checked]:bg-primary-500/50": "data-[state=checked]:bg-primary-500"
+      }
+    },
+
+    "toast": {
+      "classReplacements": {
+        "group-[.destructive]:text-red-300": "group-[.destructive]:text-destructive-foreground/70",
+        "group-[.destructive]:hover:text-red-50": "group-[.destructive]:hover:text-destructive-foreground",
+        "group-[.destructive]:focus:ring-red-400": "group-[.destructive]:focus:outline-[--ds-danger]",
+        "group-[.destructive]:focus:ring-offset-red-600": ""
+      }
+    },
+
+    "progress": {
+      "classReplacements": {
+        "dark:bg-neutral-800": "dark:bg-muted"
+      }
+    },
+
+    "tabs": {
+      "_comment": "Structural override. Carbon uses underline tabs, not pill tabs. Provide complete class strings for sub-elements.",
+      "tabsList": "inline-flex h-10 items-center justify-start border-b border-[--ds-border-subtle] bg-transparent p-0 text-muted-foreground",
+      "tabsTrigger": "inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-medium transition-all DS_FOCUS_PATTERN disabled:pointer-events-none disabled:opacity-50 border-b-2 border-transparent data-[state=active]:border-primary-500 data-[state=active]:text-foreground"
+    },
+
+    "dialog": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "sheet": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "drawer": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "alert-dialog": {
+      "classReplacements": {
+        "bg-black/80": "bg-foreground/60"
+      }
+    },
+
+    "input": {
+      "classReplacements": {}
+    },
+
+    "select": {
+      "classReplacements": {}
+    }
+  },
+
+  "notes": {
+    "_comment": "Free-form notes about the DS philosophy. Helps the agent understand design intent when making decisions not covered by explicit tokens.",
+    "borderRadiusPhilosophy": "Describe the DS approach to corners (sharp, rounded, mixed).",
+    "colorPhilosophy": "Describe the DS color personality (warm, cool, neutral, vibrant).",
+    "typographyPhilosophy": "Describe the DS type approach (weight strategy for headings, body size, spacing)."
+  }
+}

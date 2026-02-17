@@ -1,0 +1,189 @@
+---
+description: IBM Carbon Design System v11 identity - APPLY when generating any UI component, page, or layout
+globs:
+alwaysApply: true
+---
+
+# Design System: IBM Carbon v11
+
+All generated UI must follow the IBM Carbon Design System. Do NOT use default Shadcn styling.
+
+## Source of Truth
+
+- Numeric palette: `data/config/colors.js`
+- Semantic variables: `css/globals.css`
+- Tailwind extensions: `tailwind.config.js`
+- Components: `components/shared/ui/`
+- DS manifest: `design-systems/ibm-carbon/design-system.config.json`
+
+## Color Palette
+
+### Primary (Blue)
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `primary-100` / `primary-200` | `#a6c8ff` | Backgrounds, light accents |
+| `primary-300` / `primary-400` | `#78a9ff` | Borders (dark mode), hover backgrounds |
+| `primary-500` / `primary-600` | `#0f62fe` | **Primary actions**, buttons, links |
+| `primary-700` / `primary-800` | `#0043ce` | Hover states, active states |
+| `primary-900` | `#002d9c` | Dark accents |
+
+### Secondary (Green)
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `secondary-100` / `secondary-200` | `#a7f0ba` | Light backgrounds |
+| `secondary-300` / `secondary-400` | `#6fdc8c` | Borders (dark mode) |
+| `secondary-500` / `secondary-600` | `#42be65` | **Secondary actions**, success states |
+| `secondary-700` / `secondary-800` | `#24a148` | Hover states |
+| `secondary-900` | `#198038` | Dark accents |
+
+### Semantic Shadcn Variables
+- **Destructive/Danger**: `bg-destructive` (Red — `#da1e28`)
+- **Background**: `bg-background` (White light / `#161616` dark)
+- **Surface**: `bg-card` (`#fafafa` light / `#1a1a1a` dark)
+- **Muted**: `bg-muted` (Gray `#f4f4f4` light)
+- **Border**: `border-border` (`#e0e0e0` light / `#393939` dark)
+
+### DS Semantic Colors (`--ds-*` CSS Variables)
+
+These are available as CSS custom properties for use with Tailwind arbitrary values:
+
+| Variable | Light | Dark | Usage |
+|----------|-------|------|-------|
+| `--ds-interactive` | `#0f62fe` | `#78a9ff` | Primary interactive elements |
+| `--ds-interactive-hover` | `#0043ce` | `#a6c8ff` | Hover on interactive |
+| `--ds-danger` | `#da1e28` | `#ff8389` | Error states, destructive actions |
+| `--ds-danger-hover` | `#b81922` | `#ffb3b8` | Hover on danger |
+| `--ds-warning` | `#f1c21b` | `#f1c21b` | Warning states |
+| `--ds-success` | `#24a148` | `#42be65` | Success states |
+| `--ds-info` | `#0043ce` | `#4589ff` | Informational states |
+| `--ds-disabled` | `#c6c6c6` | `#525252` | Disabled backgrounds |
+| `--ds-disabled-text` | `#8d8d8d` | `#6f6f6f` | Disabled text |
+| `--ds-focus` | `#0f62fe` | `#ffffff` | Focus ring color |
+| `--ds-border-subtle` | `#e0e0e0` | `#393939` | Subtle borders |
+| `--ds-border-strong` | `#8d8d8d` | `#6f6f6f` | Strong borders |
+| `--ds-link-primary` | `#0f62fe` | `#78a9ff` | Link color |
+| `--ds-background-hover` | `rgba(141,141,141,0.12)` | `rgba(141,141,141,0.16)` | Hover overlay |
+
+**Usage in Tailwind:** `bg-[--ds-interactive]`, `text-[--ds-danger]`, `outline-[--ds-focus]`
+
+### Neutrals (`--ds-neutral-*`)
+
+| Variable | Hex | Usage |
+|----------|-----|-------|
+| `--ds-neutral-50` | `#f4f4f4` | Light surface, layer |
+| `--ds-neutral-100` | `#e0e0e0` | Subtle borders |
+| `--ds-neutral-200` | `#c6c6c6` | Disabled backgrounds |
+| `--ds-neutral-300` | `#a8a8a8` | Placeholder text |
+| `--ds-neutral-400` | `#8d8d8d` | Secondary text |
+| `--ds-neutral-500` | `#6f6f6f` | Medium gray |
+| `--ds-neutral-600` | `#525252` | Body text secondary |
+| `--ds-neutral-700` | `#393939` | Dark surfaces |
+| `--ds-neutral-800` | `#262626` | Dark backgrounds |
+| `--ds-neutral-900` | `#161616` | Darkest, text primary |
+
+## Color Usage Rules
+
+- **Primary actions** (buttons, links): `bg-primary-500`, hover: `bg-primary-700`
+- **Secondary actions**: `bg-secondary-500`, hover: `bg-secondary-700`
+- **Destructive actions**: `bg-[--ds-danger]`, hover: `bg-[--ds-danger-hover]`
+- **Surfaces**: `bg-background`, `bg-card`, `bg-muted` (CSS variable tokens)
+- **Text**: `text-foreground`, `text-muted-foreground` (CSS variable tokens)
+- **Foreground on colored bg**: `text-primary-foreground` (white)
+- NEVER use hardcoded hex values
+- NEVER use `text-white` or `text-black` — use `text-primary-foreground` or `text-foreground`
+- ALWAYS include `dark:` variants
+
+## Typography
+
+- **Font**: IBM Plex Sans (`font-sans` / `font-display`)
+- **Mono**: IBM Plex Mono (`font-mono`)
+- **Headings**: font-display
+  - Large headings (h1, h2): weight 300 (light)
+  - Small headings (h3-h6): weight 600 (semibold)
+- **Body**: 14px (`text-sm`), weight 400
+- **Body large**: 16px (`text-base`), weight 400
+- **Caption**: 12px (`text-xs`), weight 400
+
+### DS Typography Scale (`text-ds-*`)
+
+| Class | Size | Line Height | Weight | Usage |
+|-------|------|-------------|--------|-------|
+| `text-ds-caption` | 0.75rem | 1rem | 400 | Captions, fine print |
+| `text-ds-label` | 0.75rem | 1rem | 600 | Form labels, tags |
+| `text-ds-body-compact` | 0.875rem | 1.125rem | 400 | Compact body text |
+| `text-ds-body` | 0.875rem | 1.25rem | 400 | Default body text |
+| `text-ds-body-large` | 1rem | 1.5rem | 400 | Large body text |
+| `text-ds-heading-01` | 0.875rem | 1.25rem | 600 | Smallest heading |
+| `text-ds-heading-02` | 1rem | 1.5rem | 600 | Small heading |
+| `text-ds-heading-03` | 1.25rem | 1.75rem | 400 | Medium heading |
+| `text-ds-heading-04` | 1.75rem | 2.25rem | 400 | Large heading |
+| `text-ds-heading-05` | 2rem | 2.5rem | 400 | XL heading |
+| `text-ds-heading-06` | 2.625rem | 3.125rem | 300 | Display heading |
+| `text-ds-heading-07` | 3.375rem | 4rem | 300 | Hero heading |
+
+## Focus Ring
+
+**Carbon uses an outline-based focus, NOT the default Shadcn ring pattern.**
+
+```
+Correct:  focus-visible:outline-2 focus-visible:outline-[--ds-focus] focus-visible:outline-offset-[-1px]
+Incorrect: focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+```
+
+The `--ds-focus` variable resolves to `#0f62fe` (light) or `#ffffff` (dark).
+
+## Border Radius
+
+**Carbon uses sharp corners (0px) for most interactive elements.**
+
+- Buttons: `rounded-none` (0px)
+- Inputs: `rounded-none` (0px)
+- Cards: `rounded-none` (0px)
+- Dropdowns/Popovers: `rounded-none` (0px)
+- Modals: `rounded-lg` (4px)
+- Pills/Tags: `rounded-full` (9999px — only exception)
+
+## Shadows / Elevation
+
+- Cards at rest: `shadow-sm` — `0 2px 6px 0 rgba(0, 0, 0, 0.15)`
+- Cards hovered: `shadow` — `0 2px 6px 0 rgba(0, 0, 0, 0.2)`
+- Dropdowns: `shadow-md` — `0 6px 12px 0 rgba(0, 0, 0, 0.15)`
+- Modals: `shadow-lg` — `0 12px 24px 0 rgba(0, 0, 0, 0.1)`
+
+## Transitions
+
+- Fast interactions: `duration-ds-fast` (70ms)
+- Standard: `duration-ds-moderate` (150ms)
+- Complex: `duration-ds-slow` (240ms)
+- Easing: `ease-ds-standard`, `ease-ds-entrance`, `ease-ds-exit`
+
+## Spacing
+
+- Base unit: 8px
+- Button padding: `px-4 py-2` (16px / 8px)
+- Card padding: `p-4` (16px)
+- Input padding: `px-4 py-3` (16px / 12px)
+- Section gaps: `gap-6` (24px) or `gap-8` (32px)
+
+## Component Patterns
+
+When creating new components:
+1. Import from `@/components/shared/ui/`
+2. Use existing Button, Card, Input, Dialog, etc.
+3. Apply colors via token classes (NOT hex values)
+4. Keep interactive elements with sharp corners (0px radius)
+5. Use Carbon-appropriate spacing (8px grid)
+6. Use `--ds-*` semantic tokens for states (danger, warning, success, info)
+7. Use the Carbon focus pattern (outline, not ring)
+8. Use DS transition tokens for animations
+
+## Anti-Patterns
+
+- DO NOT use warm grays — Carbon uses cool, neutral grays
+- DO NOT use rounded buttons — Carbon buttons have 0px radius
+- DO NOT use heavy shadows — Carbon uses subtle elevation
+- DO NOT use bold heading weights for large text — Carbon uses light (300) for h1/h2
+- DO NOT hardcode colors — always use Tailwind token classes
+- DO NOT use `ring-2 ring-ring` for focus — use `outline-2 outline-[--ds-focus]`
+- DO NOT use opacity modifiers on primary fills (e.g., `bg-primary-300/70`) — Carbon uses solid fills
+- DO NOT use `bg-green-500` for toggle states — use `bg-primary-500`

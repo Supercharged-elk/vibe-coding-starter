@@ -1,0 +1,408 @@
+---
+description: Design System Migration Guide - ONLY apply when user asks to inject, migrate, or set up a Design System
+globs:
+  - "**/design-systems/**"
+  - "**/design-system.config.json"
+  - "**/colors.js"
+  - "**/globals.css"
+---
+
+# Design System Migration Guide (Full High-Fidelity Injection)
+
+This rule applies ONLY when the user explicitly asks to inject, migrate, import, or set up a Design System (DS).
+
+**DO NOT apply this rule** when generating normal UI components, pages, or features.
+
+## When to Apply
+
+Apply this rule when the user mentions:
+- "inject design system" / "migrate design system" / "apply [Name] Design System"
+- "set up [Name] tokens" / "add Carbon" / "add Polaris" / "add Material"
+- Working with `./design-systems/` folder
+
+## CRITICAL: Understand the Dual Color System
+
+This repo has TWO color systems that BOTH must be updated:
+
+| System | File | Generates Classes | Used By |
+|--------|------|-------------------|---------|
+| **Numeric palette** | `data/config/colors.js` | `bg-primary-100` to `bg-primary-900`, `bg-secondary-100` to `bg-secondary-900` | Components using explicit shades (Button, Badge, CTA) |
+| **Shadcn semantic vars** | `css/globals.css` | `bg-background`, `text-foreground`, `bg-card`, `bg-muted`, `bg-destructive`, `text-primary-foreground` | Components using semantic tokens (Dialog, Card, Input, Alert) |
+
+**Both systems feed into `tailwind.config.js`** which merges them. If you only update one, components will be inconsistent.
+
+## DS Config Format
+
+All DS configs live at `./design-systems/[NAME]/design-system.config.json`.
+
+See `./design-systems/TEMPLATE.config.json` for the complete schema with all sections documented.
+
+**Required sections:** `name`, `colors`, `cssVariables`, `typography`, `borderRadius`, `shadows`
+
+**Optional but recommended:** `neutrals`, `semanticColors`, `semanticColorsDark`, `spacing`, `focus`, `transitions`, `componentOverrides`
+
+---
+
+## Migration Workflow
+
+### Phase 0: Git Safety
+
+**ALWAYS create a branch before injection:**
+
+```bash
+git checkout -b ds/[NAME]-injection
+```
+
+This ensures the main branch stays clean. If injection fails, you can discard the branch.
+
+### Phase 1: Read DS Config
+
+Read `./design-systems/[NAME]/design-system.config.json` completely. Identify which optional sections are present.
+
+### Phase 2: Update Configuration Files
+
+**IMPORTANT: Update config files FIRST. This automatically changes ~80% of the visual appearance without touching any component files.**
+
+#### 2.1 Colors (`data/config/colors.js`)
+
+Update the primary and secondary palettes from `config.colors`:
+
+```javascript
+const colors = {
+  primary: {
+    lighter: '#DS_PRIMARY_LIGHTER',
+    light: '#DS_PRIMARY_LIGHT',
+    main: '#DS_PRIMARY_MAIN',
+    dark: '#DS_PRIMARY_DARK',
+    darker: '#DS_PRIMARY_DARKER',
+  },
+  secondary: {
+    lighter: '#DS_SECONDARY_LIGHTER',
+    light: '#DS_SECONDARY_LIGHT',
+    main: '#DS_SECONDARY_MAIN',
+    dark: '#DS_SECONDARY_DARK',
+    darker: '#DS_SECONDARY_DARKER',
+  },
+};
+module.exports = { colors };
+```
+
+#### 2.2 CSS Variables (`css/globals.css`)
+
+Update ALL Shadcn semantic variables in BOTH `:root` (light) and `.dark` sections from `config.cssVariables`. Values are HSL format without `hsl()` wrapper: `H S% L%`.
+
+**THEN add these NEW blocks inside `:root` and `.dark`:**
+
+**Block A — DS Semantic Colors** (from `config.semanticColors`):
+```css
+:root {
+  /* ... existing Shadcn vars ... */
+
+  /* DS semantic tokens */
+  --ds-interactive: #value;
+  --ds-interactive-hover: #value;
+  --ds-interactive-active: #value;
+  --ds-danger: #value;
+  --ds-danger-hover: #value;
+  --ds-warning: #value;
+  --ds-warning-text: #value;
+  --ds-success: #value;
+  --ds-info: #value;
+  --ds-disabled: #value;
+  --ds-disabled-text: #value;
+  --ds-focus: #value;
+  --ds-focus-inset: #value;
+  --ds-border-subtle: #value;
+  --ds-border-strong: #value;
+  --ds-text-primary: #value;
+  --ds-text-secondary: #value;
+  --ds-text-placeholder: #value;
+  --ds-text-on-color: #value;
+  --ds-link-primary: #value;
+  --ds-link-hover: #value;
+  --ds-background-hover: rgba(value);
+  --ds-background-active: rgba(value);
+  --ds-layer-01: #value;
+  --ds-layer-02: #value;
+  --ds-layer-03: #value;
+}
+```
+
+**Do the same in `.dark`** using values from `config.semanticColorsDark`.
+
+**Block B — Neutrals** (from `config.neutrals`, if present):
+```css
+:root {
+  --ds-neutral-50: #value;
+  --ds-neutral-100: #value;
+  /* ... through --ds-neutral-900 */
+}
+.dark {
+  /* Neutrals may stay the same or invert — check DS docs */
+}
+```
+
+**Block C — Update `--ring`** to use the DS focus color:
+```css
+:root {
+  --ring: H S% L%; /* Convert config.focus.color to HSL */
+}
+```
+
+**Block D — Fix hardcoded border color** on the global `*, ::before, ::after` rule:
+```css
+/* BEFORE: */
+@apply border-gray-100 dark:border-neutral-800;
+/* AFTER: use DS border token */
+@apply border-[--ds-border-subtle] dark:border-[--ds-border-subtle];
+```
+
+#### 2.3 Typography (`app/layout.tsx`)
+
+Replace the font import from `config.typography`:
+
+```typescript
+import { DS_Font_Name } from 'next/font/google';
+```
+
+**IF `config.typography.monoFont` exists**, also import it:
+```typescript
+import { DS_Mono_Font } from 'next/font/google';
+const monoFont = DS_Mono_Font({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-space-mono',
+  weight: ['400', '700'],
+});
+```
+And add `monoFont.variable` to the `<body>` className.
+
+**Fix hardcoded body colors:**
+```tsx
+// BEFORE:
+className={`bg-white text-black ... dark:bg-gray-950 dark:text-white`}
+// AFTER:
+className={`bg-background text-foreground ...`}
+```
+
+#### 2.4 Tailwind Extensions (`tailwind.config.js`)
+
+**A — Border Radius and Shadows** (existing):
+```javascript
+borderRadius: { ...config.borderRadius },
+boxShadow: { ...config.shadows },
+```
+
+**B — Typography Scale** (NEW, from `config.typography.scale`):
+
+Parse each entry (`"14px / 20px / weight 400"`) and create Tailwind fontSize tuples:
+```javascript
+fontSize: {
+  'ds-caption': ['0.75rem', { lineHeight: '1rem', fontWeight: '400' }],
+  'ds-label': ['0.75rem', { lineHeight: '1rem', fontWeight: '600' }],
+  'ds-body-compact': ['0.875rem', { lineHeight: '1.125rem', fontWeight: '400' }],
+  'ds-body': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }],
+  'ds-body-large': ['1rem', { lineHeight: '1.5rem', fontWeight: '400' }],
+  'ds-heading-01': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '600' }],
+  // ... etc for all entries
+},
+```
+
+**C — Mono Font Family** (NEW, if monoFont defined):
+```javascript
+fontFamily: {
+  sans: ['var(--font-space-default)', ...fontFamily.sans],
+  display: ['var(--font-space-display)', ...fontFamily.sans],
+  mono: ['var(--font-space-mono)', ...fontFamily.mono],
+},
+```
+
+**D — Transitions** (NEW, from `config.transitions`):
+```javascript
+transitionDuration: {
+  'ds-fast': '70ms',
+  'ds-moderate': '150ms',
+  'ds-slow': '240ms',
+},
+transitionTimingFunction: {
+  'ds-standard': 'cubic-bezier(...)',
+  'ds-entrance': 'cubic-bezier(...)',
+  'ds-exit': 'cubic-bezier(...)',
+},
+```
+
+### Phase 3: Component Overrides
+
+**If `config.componentOverrides` exists**, process each component entry. This bridges the last ~20% of visual fidelity.
+
+#### 3.1 CVA-Based Components (Button, Badge, Alert, Toast)
+
+For components with `base`, `variants`, or `sizes` keys:
+
+1. Open `components/shared/ui/[component].tsx`
+2. Find the `cva(...)` call
+3. Replace the base string with `componentOverrides.[name].base`
+4. For each variant in `componentOverrides.[name].variants`, replace the matching variant string in the CVA definition
+5. For each size in `componentOverrides.[name].sizes`, replace the matching size string
+
+**PRESERVE**: All imports, types, interfaces, props, hooks, event handlers, JSX structure, accessibility attributes, variant names.
+
+**Example (Button):**
+```tsx
+// BEFORE:
+variant: {
+  default: 'bg-primary-300/70 text-primary-foreground hover:bg-primary-300/90 dark:bg-primary-700 dark:hover:bg-primary-700/90',
+}
+// AFTER (from componentOverrides.button.variants.default):
+variant: {
+  default: 'bg-primary-500 text-primary-foreground hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-700',
+}
+```
+
+#### 3.2 Non-CVA Components (Switch, Checkbox, Progress, Dialog, etc.)
+
+For components with `classReplacements`:
+
+1. Open the component file
+2. For each key→value pair in `classReplacements`:
+   - Find the key string in the className
+   - Replace with the value string
+   - If value is empty string `""`, simply remove the key
+
+**Process replacements longest-match-first** to avoid partial matches.
+
+**Example (Switch):**
+```tsx
+// BEFORE:
+data-[state=checked]:bg-green-500
+// classReplacements: { "data-[state=checked]:bg-green-500": "data-[state=checked]:bg-primary-500" }
+// AFTER:
+data-[state=checked]:bg-primary-500
+```
+
+#### 3.3 Structural Overrides (Tabs, etc.)
+
+For components with sub-element keys (like `tabsList`, `tabsTrigger`):
+
+1. Open the component file
+2. Find the corresponding sub-component's className
+3. Replace the entire className string with the override value
+
+**Example (Tabs → Underline style):**
+```tsx
+// BEFORE (pill style):
+TabsList: 'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground'
+// AFTER (underline style from componentOverrides.tabs.tabsList):
+TabsList: 'inline-flex h-10 items-center justify-start border-b border-[--ds-border-subtle] bg-transparent p-0 text-muted-foreground'
+```
+
+#### 3.4 Focus Ring Pattern
+
+If `config.focus` exists, apply the focus replacement across ALL components that use the default Shadcn pattern:
+
+```
+FIND:    focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+REPLACE: (config.focus.tailwindPattern)
+```
+
+Also replace `focus:ring-2 focus:ring-ring focus:ring-offset-2` (without `visible` prefix) in components that use it (Badge, Toast).
+
+### Phase 4: Landing Components Sweep
+
+**Best-effort** replacement of hardcoded colors in `components/landing/` files:
+
+| Find | Replace With |
+|------|-------------|
+| `text-slate-900` | `text-foreground` |
+| `dark:text-slate-200` | `dark:text-foreground` |
+| `dark:text-slate-400` | `dark:text-muted-foreground` |
+| `bg-gray-950` | `bg-background` |
+| `dark:bg-gray-950` | `dark:bg-background` |
+| `text-white` (on dark bg) | `text-primary-foreground` |
+| `text-black` | `text-foreground` |
+
+**This is a best-effort pass.** Not all landing components will be covered. The goal is to reduce hardcoded colors, not achieve 100% coverage.
+
+### Phase 5: Visual Audit
+
+After all changes, run `npm run dev` and visually audit:
+
+1. Check BOTH light and dark mode
+2. Verify primary color is correct on buttons, links, active states
+3. Verify font family loaded and rendering
+4. Verify border radius matches DS (buttons, cards, inputs)
+5. Verify shadows match DS
+6. Verify focus rings work correctly (Tab through interactive elements)
+7. Verify hover states use DS colors
+
+### Phase 6: Agent Rules
+
+Create/update `.cursor/rules/design-system-brand.mdc` with the DS identity:
+
+The brand rule should include:
+- Color palette reference (primary/secondary)
+- **Semantic colors reference** (all `--ds-*` variables with their hex values)
+- **Focus ring pattern** (what classes to use)
+- **Typography scale** (all `text-ds-*` classes)
+- **Neutrals scale** (all `--ds-neutral-*` variables)
+- Border radius behavior
+- Shadow levels
+- Component spacing reference
+- Anti-patterns for this DS
+
+### Phase 7: Verification (CRITICAL)
+
+#### 7.1 TypeScript Check
+```bash
+npx tsc --noEmit
+```
+Fix ALL errors before proceeding.
+
+#### 7.2 Dev Server
+```bash
+npm run dev
+```
+Open in browser and check BOTH light and dark mode.
+
+#### 7.3 Visual Checklist
+- [ ] Primary color matches DS on buttons, links, badges
+- [ ] Font family loaded and rendering correctly
+- [ ] Border radius matches DS (check buttons, cards, inputs)
+- [ ] Shadows match DS elevation levels
+- [ ] Background/surface colors match
+- [ ] Dark mode looks correct
+- [ ] Hover/focus states work properly
+- [ ] Focus ring follows DS pattern (not default ring-2)
+- [ ] Tabs render with correct style (underline vs pill)
+- [ ] Switch checked state uses DS color (not green)
+- [ ] Checkbox checked state is solid (no opacity)
+- [ ] No hardcoded hex values in modified component files
+
+#### 7.4 Coherence Test
+
+Create a test page WITHOUT specifying any styles:
+```
+Create /app/test-coherence/page.tsx with a login form using Card, Input, Button, and a Dialog for password recovery.
+```
+
+**Verify the agent automatically uses:**
+- [ ] DS colors (not default Shadcn)
+- [ ] DS border radius
+- [ ] DS typography
+- [ ] DS focus ring
+- [ ] DS spacing
+
+If any component looks "default" or doesn't match DS, go back and fix it.
+
+---
+
+## Anti-Patterns
+
+- DO NOT copy-paste DS component source files (different dependency tree)
+- DO NOT use CSS-in-JS patterns if repo uses Tailwind
+- DO NOT use hardcoded `text-white` or `text-black` — use `text-primary-foreground` or DS text tokens
+- DO NOT skip the git branch step
+- DO NOT clone entire DS repos (100s of MB) when a config.json manifest suffices
+- DO NOT manually edit ALL 55 components — update config files first, apply componentOverrides, then only fix what doesn't match
+- DO NOT skip the focus ring replacement — it affects ALL interactive components
+- DO NOT leave `bg-green-500` or `bg-black/80` or `text-red-300` hardcoded in components
